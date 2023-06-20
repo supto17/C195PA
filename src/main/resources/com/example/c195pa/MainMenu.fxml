@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="669.0" prefWidth="916.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenuController">
+   <children>
+      <AnchorPane prefHeight="83.0" prefWidth="819.0">
+         <children>
+            <ToolBar layoutX="7.0" layoutY="6.0" prefHeight="17.0" prefWidth="311.0">
+               <items>
+                  <RadioButton mnemonicParsing="false" onAction="#onActionViewByMonth" text="View by Month">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="viewSort" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton mnemonicParsing="false" onAction="#onActionViewByWeek" text="View by Week" toggleGroup="$viewSort" />
+                  <RadioButton mnemonicParsing="false" onAction="#onActionViewAll" text="View All" toggleGroup="$viewSort" />
+               </items>
+            </ToolBar>
+            <Label alignment="CENTER" layoutX="288.0" layoutY="35.0" prefHeight="42.0" prefWidth="321.0" text="Appointments" textAlignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <TableView fx:id="allAppointmentsTable" layoutX="8.0" layoutY="99.0" prefHeight="383.0" prefWidth="902.0">
+        <columns>
+          <TableColumn fx:id="apptID" prefWidth="75.0" text="Appt ID" />
+          <TableColumn fx:id="apptTitle" prefWidth="75.0" text="Title" />
+            <TableColumn fx:id="apptDescription" prefWidth="75.0" text="Description" />
+            <TableColumn fx:id="apptLocation" prefWidth="75.0" text="Location" />
+            <TableColumn fx:id="apptContact" prefWidth="75.0" text="Contact" />
+            <TableColumn fx:id="apptType" prefWidth="75.0" text="Type" />
+            <TableColumn fx:id="apptStartTime" prefWidth="75.0" text="Start Time" />
+            <TableColumn fx:id="apptEndTime" prefWidth="75.0" text="End Time" />
+            <TableColumn fx:id="apptStartDate" prefWidth="75.0" text="Start Date" />
+            <TableColumn fx:id="apptEndDate" prefWidth="75.0" text="End Date" />
+            <TableColumn fx:id="apptCustomerID" prefWidth="75.0" text="Customer ID" />
+            <TableColumn fx:id="apptUserID" prefWidth="75.0" text="User ID" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
