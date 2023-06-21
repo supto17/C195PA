@@ -1,9 +1,9 @@
-package dao;
+package com.example.c195pa.dao;
 
-import helper.JDBC;
+import com.example.c195pa.helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.FirstLevelDivisions;
+import com.example.c195pa.model.FirstLevelDivisions;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

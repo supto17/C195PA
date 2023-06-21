@@ -1,4 +1,4 @@
-package model;
+package com.example.c195pa.model;
 
 import java.time.LocalDateTime;
 
@@ -26,10 +26,6 @@ public class Appointments {
         this.customerID = customerID;
         this.userID = userID;
         this.contactID = contactID;
-    }
-
-    public Appointments() {
-
     }
 
     /**

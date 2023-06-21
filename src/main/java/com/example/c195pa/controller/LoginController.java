@@ -1,7 +1,7 @@
-package controller;
+package com.example.c195pa.controller;
 
 import com.example.c195pa.main;
-import helper.JDBC;
+import com.example.c195pa.helper.JDBC;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

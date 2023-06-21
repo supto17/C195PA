@@ -1,4 +1,4 @@
-package model;
+package com.example.c195pa.model;
 
 public class FirstLevelDivisions {
     private int divisionID;

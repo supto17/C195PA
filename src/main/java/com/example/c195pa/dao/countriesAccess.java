@@ -1,11 +1,10 @@
-package dao;
+package com.example.c195pa.dao;
 
-import helper.JDBC;
+import com.example.c195pa.helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Countries;
+import com.example.c195pa.model.Countries;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 public class countriesAccess {
 

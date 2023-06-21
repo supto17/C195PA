@@ -1,6 +1,6 @@
 package com.example.c195pa;
 
-import helper.JDBC;
+import com.example.c195pa.helper.JDBC;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
