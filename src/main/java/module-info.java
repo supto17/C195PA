@@ -11,6 +11,9 @@ module com.example.c195pa {
     opens com.example.c195pa.controller to javafx.fxml;
     exports com.example.c195pa.helper;
     opens com.example.c195pa.helper to javafx.fxml;
+<<<<<<< Updated upstream
     exports com.example.c195pa.model;
     opens com.example.c195pa.model to javafx.fxml;
+=======
+>>>>>>> Stashed changes
 }

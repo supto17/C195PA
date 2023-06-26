@@ -1,7 +1,10 @@
 package com.example.c195pa;
 
 import com.example.c195pa.helper.JDBC;
+<<<<<<< Updated upstream
 import com.example.c195pa.model.Appointments;
+=======
+>>>>>>> Stashed changes
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

@@ -8,7 +8,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
+<<<<<<< Updated upstream
 <AnchorPane prefHeight="669.0" prefWidth="1034.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.c195pa.controller.MainMenuController">
+=======
+
+<AnchorPane prefHeight="669.0" prefWidth="916.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.c195pa.controller.MainMenuController">
+>>>>>>> Stashed changes
    <children>
       <AnchorPane prefHeight="332.0" prefWidth="1034.0">
          <children>
