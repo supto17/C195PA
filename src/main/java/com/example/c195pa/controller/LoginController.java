@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class LoginController {
     public TextField loginUsername;
@@ -34,7 +35,7 @@ public class LoginController {
     }
 
     public void onActionLoginButton(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(main.class.getResource("MainMenu.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("MainMenu.fxml")));
         Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setTitle("Main Menu");
