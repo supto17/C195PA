@@ -1,5 +1,9 @@
 package com.example.c195pa.model;
 
+import com.example.c195pa.dao.customerAccess;
+
+import java.sql.SQLException;
+
 public class Customers {
     private int customerID;
     private String customerName;
@@ -7,9 +11,10 @@ public class Customers {
     private String customerPostalCode;
     private String customerPhoneNumber;
     public int divisionID;
+    public String country;
 
     public Customers(int customerID, String customerName, String customerAddress, String customerPostalCode,
-                     String customerPhoneNumber, int divisionID) {
+                     String customerPhoneNumber, int divisionID) throws SQLException {
         this.customerID = customerID;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
@@ -17,6 +22,7 @@ public class Customers {
         this.customerPhoneNumber = customerPhoneNumber;
         this.divisionID = divisionID;
     }
+
 
     /**
      * @return customerID

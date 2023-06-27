@@ -1,16 +1,18 @@
 package com.example.c195pa;
 
+import com.example.c195pa.dao.customerAccess;
 import com.example.c195pa.helper.JDBC;
-<<<<<<< Updated upstream
 import com.example.c195pa.model.Appointments;
-=======
->>>>>>> Stashed changes
+import com.example.c195pa.model.Customers;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Locale;
 
 public class main extends Application {

@@ -1,6 +1,8 @@
 package com.example.c195pa.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Appointments {
     private int appointmentID;
@@ -8,14 +10,17 @@ public class Appointments {
     private String description;
     private String location;
     private String appointmentType;
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private LocalDateTime dateTime;
+    private LocalTime start;
+    private LocalTime end;
+    private LocalDate localDate;
     public int customerID;
     public int userID;
     public int contactID;
 
     public Appointments(int appointmentID, String title, String description, String location, String appointmentType,
-                        LocalDateTime start, LocalDateTime end, int customerID, int userID, int contactID) {
+                        LocalTime start, LocalTime end, LocalDate localDate, int customerID, int userID, int contactID,
+                        LocalDateTime dateTime) {
         this.appointmentID = appointmentID;
         this.title = title;
         this.description = description;
@@ -23,9 +28,11 @@ public class Appointments {
         this.appointmentType = appointmentType;
         this.start = start;
         this.end = end;
+        this.localDate = localDate;
         this.customerID = customerID;
         this.userID = userID;
         this.contactID = contactID;
+        this.dateTime = dateTime;
     }
 
     /**
@@ -66,16 +73,21 @@ public class Appointments {
     /**
      * @return start
      */
-    public LocalDateTime getStart() {
+    public LocalTime getStart() {
         return start;
     }
 
     /**
      * @return end
      */
-    public LocalDateTime getEnd() {
+    public LocalTime getEnd() {
         return end;
     }
+
+    /**
+     * @return lDate
+     */
+    public LocalDate getLocalDate() {return localDate;}
 
     /**
      * @return customerID
@@ -97,4 +109,6 @@ public class Appointments {
     public int getContactID() {
         return contactID;
     }
+
+    public LocalDateTime getDateTime() { return dateTime; }
 }

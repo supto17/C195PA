@@ -8,7 +8,10 @@ import com.example.c195pa.model.Appointments;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class appointmentAccess {
 
@@ -27,14 +30,17 @@ public class appointmentAccess {
                 String description = rs.getString("Description");
                 String location = rs.getString("Location");
                 String type = rs.getString("Type");
-                LocalDateTime start = rs.getTimestamp("Start").toLocalDateTime();
-                LocalDateTime end = rs.getTimestamp("End").toLocalDateTime();
+                Timestamp startTime = rs.getTimestamp("Start");
+                LocalTime end = rs.getTimestamp("End").toLocalDateTime().toLocalTime();
+                LocalDate localDate = startTime.toLocalDateTime().toLocalDate();
+                LocalTime start = startTime.toLocalDateTime().toLocalTime();
                 int customerID = rs.getInt("Customer_ID");
                 int userID = rs.getInt("User_ID");
                 int contactID = rs.getInt("Contact_ID");
+                LocalDateTime dateTime = rs.getTimestamp("Start").toLocalDateTime();
 
                 Appointments a = new Appointments(appointmentID, title, description, location, type,
-                        start, end, customerID, userID, contactID);
+                        start, end, localDate, customerID, userID, contactID, dateTime);
                 appointmentsObservableList.add(a);
             }
         }
