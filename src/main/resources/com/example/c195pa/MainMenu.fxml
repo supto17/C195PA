@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="669.0" prefWidth="916.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.c195pa.controller.MainMenuController">
+<AnchorPane prefHeight="669.0" prefWidth="916.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.c195pa.controller.MainMenuController">
    <children>
       <AnchorPane prefHeight="332.0" prefWidth="1034.0">
          <children>
@@ -43,14 +43,15 @@
       </AnchorPane>
       <AnchorPane layoutY="335.0" prefHeight="332.0" prefWidth="878.0" style="-fx-border-width: 1px 1px 0px 0px; -fx-border-color: #000000;">
          <children>
-            <TableView fx:id="allCustomersTable" layoutX="28.0" layoutY="56.0" prefHeight="227.0" prefWidth="717.0">
+            <TableView fx:id="allCustomersTable" layoutX="28.0" layoutY="56.0" prefHeight="227.0" prefWidth="821.0">
                <columns>
                   <TableColumn fx:id="custID" prefWidth="43.0" style="-fx-alignment: CENTER;" text="ID" />
                   <TableColumn fx:id="custName" prefWidth="154.0" style="-fx-alignment: CENTER;" text="Name" />
-                  <TableColumn fx:id="custAddress" prefWidth="142.0" style="-fx-alignment: CENTER;" text="Address" />
-                  <TableColumn fx:id="custPhoneNumber" prefWidth="135.0" style="-fx-alignment: CENTER;" text="Phone Number" />
-                  <TableColumn fx:id="custState" prefWidth="142.0" style="-fx-alignment: CENTER;" text="State/Province" />
-                  <TableColumn fx:id="custPostalCode" prefWidth="99.0" style="-fx-alignment: CENTER;" text="Postal Code" />
+                  <TableColumn fx:id="custPhoneNumber" prefWidth="113.0" style="-fx-alignment: CENTER;" text="Phone Number" />
+                  <TableColumn fx:id="custAddress" prefWidth="149.0" style="-fx-alignment: CENTER;" text="Address" />
+                  <TableColumn fx:id="custState" prefWidth="129.0" style="-fx-alignment: CENTER;" text="State/Province" />
+                  <TableColumn fx:id="custCountry" prefWidth="127.0" style="-fx-alignment: CENTER;" text="Country" />
+                  <TableColumn fx:id="custPostalCode" prefWidth="105.0" style="-fx-alignment: CENTER;" text="Postal Code" />
                </columns>
             </TableView>
             <Label alignment="CENTER" layoutX="28.0" layoutY="14.0" prefHeight="42.0" prefWidth="164.0" text="Customers" textAlignment="CENTER">

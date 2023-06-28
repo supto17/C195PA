@@ -1,9 +1,7 @@
 package com.example.c195pa.dao;
 
 import com.example.c195pa.helper.JDBC;
-import com.example.c195pa.model.Countries;
-import com.mysql.cj.jdbc.JdbcConnection;
-import javafx.beans.binding.When;
+import com.example.c195pa.model.Logon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.example.c195pa.model.Customers;
@@ -11,6 +9,9 @@ import com.example.c195pa.model.Customers;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class customerAccess {
 
@@ -45,11 +46,70 @@ public class customerAccess {
         return customersObservableList;
     }
 
-    public static boolean updateCustomer(Integer customerID, String name, String address, String postalCode, String phoneNumber, String divsionID) {
-        //todo update customer
-        return false;
+    //todo complete update logic
+    public static boolean updateCustomer(Integer customerID, String name, String address,
+                                         String postalCode, String phoneNumber, String country,
+                                         String division) throws SQLException {
+
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        PreparedStatement ps = JDBC.getConnection().prepareStatement("UPDATE customers " +
+                " SET Customer_Name=?, Address=?, Postal_Code=?, Phone=?, Last_Update=?," +
+                " Last_Updated_By=?, Division_ID=? WHERE Customer_ID=?");
+
+        ps.setString(1, name);
+        ps.setString(2, address);
+        ps.setString(3, postalCode);
+        ps.setString(4, phoneNumber);
+        ps.setString(5, ZonedDateTime.now(ZoneOffset.UTC).format(f));
+        ps.setString(6, Logon.getLoggedOnUser().getUsername());
+        ps.setInt(7, customerAccess.getUserDivisionID(division));
+        ps.setInt(8, customerID);
+
+        try {
+            ps.executeQuery();
+            ps.close();
+            return true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
+    public static boolean addCustomer(String name, String address,
+                                      String postalCode, String phoneNumber, String country,
+                                      String division) throws SQLException {
+
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+
+        PreparedStatement ps = JDBC.getConnection().prepareStatement("INSERT INTO customers "
+                + "(Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update," +
+                " Last_Updated_By, Division_ID)" +
+                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+        ps.setString(1, name);
+        ps.setString(2, address);
+        ps.setString(3, postalCode);
+        ps.setString(4, phoneNumber);
+        ps.setString(5, ZonedDateTime.now(ZoneOffset.UTC).format(f));
+        ps.setString(6, Logon.getLoggedOnUser().getUsername());
+        ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(f));
+        ps.setString(8, Logon.getLoggedOnUser().getUsername());
+        ps.setInt(9, customerAccess.getUserDivisionID(division));
+
+        try {
+            ps.executeQuery();
+            ps.close();
+            return true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            ps.close();
+            return false;
+        }
+
+    }
 
     public static String getState(int divisionID) throws SQLException {
         String country = null;
@@ -91,5 +151,33 @@ public class customerAccess {
         }
         ps.close();
         return countries;
+    }
+
+    public static int getUserDivisionID(String division) throws SQLException {
+        int divID = 0;
+
+        String sql = "SELECT Division_ID FROM first_level_divisions WHERE Division = ?;";
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            divID = rs.getInt("Division_ID");
+        }
+
+        ps.close();
+        return divID;
+    }
+
+    public static ObservableList<Integer> getCustomerIDs() throws SQLException {
+        ObservableList<Integer> i = FXCollections.observableArrayList();
+        // customer ID was not showing in correct order without order by
+        PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT Customer_ID FROM " +
+                "customers ORDER BY Customer_ID");
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            i.add(rs.getInt("Customer_ID"));
+        }
+        return i;
     }
 }

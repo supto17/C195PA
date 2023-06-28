@@ -14,13 +14,14 @@ public class Appointments {
     private LocalTime start;
     private LocalTime end;
     private LocalDate localDate;
+    public String contact;
     public int customerID;
     public int userID;
     public int contactID;
 
     public Appointments(int appointmentID, String title, String description, String location, String appointmentType,
                         LocalTime start, LocalTime end, LocalDate localDate, int customerID, int userID, int contactID,
-                        LocalDateTime dateTime) {
+                        String contact, LocalDateTime dateTime) {
         this.appointmentID = appointmentID;
         this.title = title;
         this.description = description;
@@ -32,6 +33,7 @@ public class Appointments {
         this.customerID = customerID;
         this.userID = userID;
         this.contactID = contactID;
+        this.contact = contact;
         this.dateTime = dateTime;
     }
 
@@ -109,6 +111,8 @@ public class Appointments {
     public int getContactID() {
         return contactID;
     }
+
+    public String getContact() {return contact;}
 
     public LocalDateTime getDateTime() { return dateTime; }
 }

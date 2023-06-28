@@ -9,7 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -26,7 +25,6 @@ import java.time.LocalDate;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -73,6 +71,8 @@ public class MainMenuController implements Initializable {
     @FXML
     public TableColumn<Customers, String> custState;
     @FXML
+    public TableColumn<Customers, String> custCountry;
+    @FXML
     public TableColumn<Customers, String> custPostalCode;
     @FXML
     public Button deleteAppointment;
@@ -89,6 +89,7 @@ public class MainMenuController implements Initializable {
     @FXML
     public Button exitButton;
 
+
     public void switchScreen(ActionEvent event, String path, String title) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource(path)));
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -98,13 +99,12 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
-    public Alert createWarningAlert(String title, String header, String context) {
+    public void createWarningAlert(String title, String header, String context) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(context);
         alert.showAndWait();
-        return alert;
     }
 
 
@@ -112,10 +112,27 @@ public class MainMenuController implements Initializable {
     public void onReportsButtonClick(ActionEvent actionEvent) {
     }
 
-    public void onActionAddAppointment(ActionEvent actionEvent) {
+    public void onActionAddAppointment(ActionEvent actionEvent) throws IOException {
+        switchScreen(actionEvent, "AddAppointment.fxml", "Add Appointment");
     }
 
-    public void onActionUpdateAppointment(ActionEvent actionEvent) {
+    public void onActionUpdateAppointment(ActionEvent actionEvent) throws IOException, SQLException {
+        Appointments selected = allAppointmentsTable.getSelectionModel().getSelectedItem();
+        FXMLLoader loader = new FXMLLoader(main.class.getResource("ModifyAppointment.fxml"));
+        loader.load();
+
+        if (selected == null) {
+            createWarningAlert("Invalid Selection", "Please select something", "Select an appointment you wish to edit");
+        } else {
+
+            ModifyAppointmentController m = loader.getController();
+            m.sendAppointment(selected);
+
+            Parent root = loader.getRoot();
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+            window.setScene(scene);
+        }
     }
     public void onActionDeleteAppointment(ActionEvent actionEvent) {
         Appointments selected = allAppointmentsTable.getSelectionModel().getSelectedItem();
@@ -200,7 +217,7 @@ public class MainMenuController implements Initializable {
         apptTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         apptDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         apptLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
-        apptContact.setCellValueFactory(new PropertyValueFactory<>("contactID"));
+        apptContact.setCellValueFactory(new PropertyValueFactory<>("Contact"));
         apptType.setCellValueFactory(new PropertyValueFactory<>("appointmentType"));
         apptStartTime.setCellValueFactory(new PropertyValueFactory<>("start"));
         apptEndTime.setCellValueFactory(new PropertyValueFactory<>("end"));
@@ -211,9 +228,10 @@ public class MainMenuController implements Initializable {
         // Load values from Customers into appointments table view
         custID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         custName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-        custAddress.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
         custPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("customerPhoneNumber"));
-        custState.setCellValueFactory(new PropertyValueFactory<>("Country"));
+        custAddress.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
+        custState.setCellValueFactory(new PropertyValueFactory<>("Division"));
+        custCountry.setCellValueFactory(new PropertyValueFactory<>("Country"));
         custPostalCode.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
 
 

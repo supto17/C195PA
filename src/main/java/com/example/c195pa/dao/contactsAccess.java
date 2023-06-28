@@ -32,4 +32,15 @@ public class contactsAccess {
             }
          return contactsObservableList;
     }
+
+    public static ObservableList<String> getContactNames() throws SQLException {
+        ObservableList<String> contacts = FXCollections.observableArrayList();
+        PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT Contact_Name FROM contacts;");
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()) {
+            contacts.add(rs.getString("Contact_Name"));
+        }
+        return contacts;
+    }
 }

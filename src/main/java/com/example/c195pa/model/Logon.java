@@ -8,8 +8,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.ZoneId;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class Logon {
+
+    public Logon() {
+    }
+    private static Users loggedOnUser;
+    private static Locale userLocale;
+    private static ZoneId userZoneID;
 
     public static boolean loginAttempt(String username, String password) throws SQLException {
 
@@ -24,8 +33,26 @@ public class Logon {
             //TODO log failed in attempt
         }
         else {
-            //TODO log successful user lo in
+            loggedOnUser = new Users(rs.getInt("User_ID"), rs.getString("User_Name"),
+                    rs.getString("Password"));
+            userLocale = Locale.getDefault();
+            userZoneID = ZoneId.systemDefault();
+            ps.close();
             return true;
         }
+    }
+
+
+
+    public static Users getLoggedOnUser() {
+        return loggedOnUser;
+    }
+
+    public static Locale getUserLocale() {
+        return userLocale;
+    }
+
+    public static ZoneId getUserZoneID() {
+        return userZoneID;
     }
 }

@@ -10,9 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -42,6 +40,15 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     public Button cancelButton;
 
+    public void toMainMenu (ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("MainMenu.fxml")));
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setTitle("Main Menu");
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public void sendCustomer(Customers selectedCustomer) throws SQLException {
         customerCountryBox.setItems(customerAccess.getAllCountries());
         customerCountryBox.getSelectionModel().select(selectedCustomer.getCountry());
@@ -55,21 +62,51 @@ public class ModifyCustomerController implements Initializable {
 
     }
 
-    public void onActionSaveButton(ActionEvent actionEvent) {
+    public void onActionSaveButton(ActionEvent actionEvent) throws SQLException, IOException {
+
+        // check for null fields
+        Integer id = Integer.parseInt(customerID.getText());
+        String name = customerName.getText();
+        String address = customerAddress.getText();
+        String postalCode = customerPostalCode.getText();
+        String phoneNumber = customerPhoneNumber.getText();
+        String country = customerCountryBox.getValue();
+        String division = divisionBox.getValue();
+
+        if (name.isEmpty() || address.isEmpty() || postalCode.isEmpty() || phoneNumber.isEmpty() ||
+            country.isEmpty() || division.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Invalid Fields");
+            alert.setHeaderText("Error Parsing Data");
+            alert.setContentText("Please ensure all fields are not blank.");
+            alert.showAndWait();
+        }
+        // create boolean for if update worked
+        boolean success = customerAccess.updateCustomer(id, name, address, postalCode, phoneNumber, country, division);
+
+        //report success
+        if (success) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("Appointment update successful");
+            alert.showAndWait();
+            toMainMenu(actionEvent);
+        }
+        // report failure to update
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText("Failed to update " + customerName.getText() + ".");
+            alert.showAndWait();
+        }
     }
 
     public void onActionCancelButton(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("MainMenu.fxml")));
-        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setTitle("Main Menu");
-        stage.setScene(scene);
-        stage.show();
+        toMainMenu(actionEvent);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        // lambda function to listen for country combo box selection
         customerCountryBox.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal == null) {
                 divisionBox.getItems().clear();

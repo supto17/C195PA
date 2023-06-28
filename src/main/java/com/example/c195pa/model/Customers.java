@@ -15,7 +15,7 @@ public class Customers {
     public String country;
 
 
-    public Customers(int customerID, String customerName, String customerAddress, String customerPostalCode,
+    public Customers(Integer customerID, String customerName, String customerAddress, String customerPostalCode,
                      String customerPhoneNumber, int divisionID, String division, String country) throws SQLException {
         this.customerID = customerID;
         this.customerName = customerName;
@@ -31,7 +31,7 @@ public class Customers {
     /**
      * @return customerID
      */
-    public int getCustomerID() {
+    public Integer getCustomerID() {
         return customerID;
     }
 

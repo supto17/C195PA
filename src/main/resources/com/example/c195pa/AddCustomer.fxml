@@ -8,10 +8,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="607.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.c195pa.controller.AddCustomerController">
+<AnchorPane prefHeight="607.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.c195pa.controller.AddCustomerController">
    <children>
-      <VBox layoutX="28.0" layoutY="97.0" prefHeight="326.0" prefWidth="152.0" spacing="40.0">
+      <VBox layoutX="28.0" layoutY="97.0" prefHeight="416.0" prefWidth="152.0" spacing="40.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Customer ID" wrappingWidth="106.087890625">
                <font>
@@ -50,23 +49,26 @@
             </Text>
          </children>
       </VBox>
-      <VBox layoutX="213.0" layoutY="97.0" prefHeight="409.0" prefWidth="196.0" spacing="39.0">
+      <VBox layoutX="213.0" layoutY="97.0" prefHeight="409.0" prefWidth="196.0" spacing="35.0">
          <children>
-            <TextField editable="false" prefHeight="25.0" prefWidth="231.0" />
-            <TextField />
-            <TextField />
-            <TextField />
-            <TextField />
-            <ComboBox prefHeight="25.0" prefWidth="197.0" />
-            <ComboBox prefHeight="25.0" prefWidth="198.0" />
+            <TextField fx:id="customerIdField" editable="false" prefHeight="25.0" prefWidth="231.0" text="Autogen">
+               <font>
+                  <Font name="System Italic" size="13.0" />
+               </font></TextField>
+            <TextField fx:id="customerNameField" />
+            <TextField fx:id="customerAddressField" />
+            <TextField fx:id="customerPostalCodeField" />
+            <TextField fx:id="customerPhoneNumberField" />
+            <ComboBox fx:id="customerCountryBox" prefHeight="25.0" prefWidth="197.0" />
+            <ComboBox fx:id="divisionBox" prefHeight="25.0" prefWidth="198.0" />
          </children>
       </VBox>
-      <Button layoutX="221.0" layoutY="541.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="92.0" text="Save">
+      <Button fx:id="saveButton" layoutX="221.0" layoutY="541.0" mnemonicParsing="false" onAction="#saveButtonClick" prefHeight="30.0" prefWidth="92.0" text="Save">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="317.0" layoutY="541.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="92.0" text="Cancel">
+      <Button fx:id="cancelButton" layoutX="317.0" layoutY="541.0" mnemonicParsing="false" onAction="#cancelButtonClicked" prefHeight="30.0" prefWidth="92.0" text="Cancel">
          <font>
             <Font size="14.0" />
          </font>
