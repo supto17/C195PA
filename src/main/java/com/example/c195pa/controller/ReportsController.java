@@ -1,5 +1,14 @@
 package com.example.c195pa.controller;
 
-public class ReportsController {
+import javafx.fxml.Initializable;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class ReportsController implements Initializable {
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
 }

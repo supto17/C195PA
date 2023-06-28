@@ -11,16 +11,20 @@ public class Customers {
     private String customerPostalCode;
     private String customerPhoneNumber;
     public int divisionID;
+    public String division;
     public String country;
 
+
     public Customers(int customerID, String customerName, String customerAddress, String customerPostalCode,
-                     String customerPhoneNumber, int divisionID) throws SQLException {
+                     String customerPhoneNumber, int divisionID, String division, String country) throws SQLException {
         this.customerID = customerID;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.customerPostalCode = customerPostalCode;
         this.customerPhoneNumber = customerPhoneNumber;
         this.divisionID = divisionID;
+        this.division = division;
+        this.country = country;
     }
 
 
@@ -65,4 +69,8 @@ public class Customers {
     public int getDivisionID() {
         return divisionID;
     }
+
+    public String getDivision() {return division;}
+
+    public String getCountry() {return country;}
 }
