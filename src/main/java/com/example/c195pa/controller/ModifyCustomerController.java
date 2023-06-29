@@ -71,7 +71,7 @@ public class ModifyCustomerController implements Initializable {
         String postalCode = customerPostalCode.getText();
         String phoneNumber = customerPhoneNumber.getText();
         String country = customerCountryBox.getValue();
-        String division = divisionBox.getValue();
+        String division = divisionBox.getSelectionModel().getSelectedItem();
 
         if (name.isEmpty() || address.isEmpty() || postalCode.isEmpty() || phoneNumber.isEmpty() ||
             country.isEmpty() || division.isEmpty()) {
@@ -86,7 +86,7 @@ public class ModifyCustomerController implements Initializable {
 
         //report success
         if (success) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Appointment update successful");
             alert.showAndWait();
             toMainMenu(actionEvent);

@@ -1,14 +1,14 @@
 package com.example.c195pa.dao;
 
 import com.example.c195pa.helper.JDBC;
+import com.example.c195pa.model.Logon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.example.c195pa.model.Appointments;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 public class appointmentAccess {
 
@@ -20,7 +20,7 @@ public class appointmentAccess {
             String sql = "SELECT a.Appointment_ID, a.Type, a.Title, a.Description, a.Location, a.Type, a.Start," +
                     "a.End, a.Create_Date, a.Created_By, a.Last_Update, a.Last_Updated_By, " +
                     "a.Customer_ID, a.Contact_ID, a.User_ID, c.Contact_Name FROM client_schedule.appointments a " +
-                    "INNER JOIN contacts c ON a.contact_ID = c.Contact_ID;";
+                    "INNER JOIN contacts c ON a.contact_ID = c.Contact_ID ORDER BY Appointment_ID;";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
@@ -51,10 +51,43 @@ public class appointmentAccess {
         return appointmentsObservableList;
     }
 
-    public static boolean addAppointment(String title, String description, String location, String contact,
-                                         String type, Timestamp t, Integer customerID, Integer userID) {
+    public static boolean addAppointment(String title, String description, String location,
+                                         String type, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer customerID, Integer userID, Integer contactID) throws SQLException {
 
-        return true;
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        LocalDateTime start = LocalDateTime.of(startDate, startTime);
+        LocalDateTime end = LocalDateTime.of(endDate, endTime);
+
+
+        String sql = "INSERT INTO appointments "
+                + "(Title, Description, Location, Type, Start, End, Create_Date," +
+                " Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID)" +
+                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?);";
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
+        ps.setString(1,title);
+        ps.setString(2, description);
+        ps.setString(3, location);
+        ps.setString(4, type);
+        ps.setString(5, String.valueOf(start));
+        ps.setString(6, String.valueOf(end));
+        ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(f));
+        ps.setString(8, Logon.getLoggedOnUser().toString());
+        ps.setString(9, ZonedDateTime.now(ZoneOffset.UTC).format(f));
+        ps.setString(10, Logon.getLoggedOnUser().toString());
+        ps.setInt(11, customerID);
+        ps.setInt(12, userID);
+        ps.setInt(13, contactID);
+
+        try {
+            ps.executeUpdate();
+            ps.close();
+            return true;
+        }
+        catch (SQLException err) {
+            err.printStackTrace();
+            return false;
+        }
     }
 
     public static ObservableList<Integer> getUserIDs() throws SQLException {

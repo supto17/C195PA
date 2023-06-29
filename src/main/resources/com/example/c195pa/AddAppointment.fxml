@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="538.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.c195pa.controller.AddAppointmentController">
+<AnchorPane prefHeight="612.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.c195pa.controller.AddAppointmentController">
    <children>
       <Label layoutX="136.0" layoutY="26.0" text="Add Appointment">
          <font>
@@ -82,9 +81,12 @@
             </Label>
          </children>
       </VBox>
-      <VBox layoutX="188.0" layoutY="80.0" prefHeight="391.0" prefWidth="234.0" spacing="7.0">
+      <VBox layoutX="188.0" layoutY="80.0" prefHeight="391.0" prefWidth="234.0" spacing="12.0">
          <children>
-            <TextField fx:id="appointmentIDField" editable="false" promptText="AutoGen" />
+            <TextField fx:id="appointmentIDField" editable="false" promptText="AutoGen">
+               <font>
+                  <Font size="14.0" />
+               </font></TextField>
             <TextField fx:id="appointmentTitleField" />
             <TextField fx:id="appointmentDescriptionField" />
             <TextField fx:id="appointmentLocationField" />
@@ -98,7 +100,7 @@
             <ComboBox fx:id="apptUserID" layoutX="10.0" layoutY="307.0" prefHeight="26.0" prefWidth="237.0" />
          </children>
       </VBox>
-      <HBox layoutX="235.0" layoutY="488.0" prefHeight="29.0" prefWidth="157.0" spacing="20.0" style="-fx-alignment: CENTER;">
+      <HBox layoutX="249.0" layoutY="543.0" prefHeight="29.0" prefWidth="157.0" spacing="20.0" style="-fx-alignment: CENTER;">
          <children>
             <Button mnemonicParsing="false" onAction="#saveButtonClicked" text="Save" />
             <Button alignment="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#cancelButtonClicked" text="Cancel" />

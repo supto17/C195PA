@@ -11,10 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import com.example.c195pa.model.Appointments;
 import javafx.stage.Modality;
@@ -27,6 +24,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainMenuController implements Initializable {
@@ -109,7 +107,8 @@ public class MainMenuController implements Initializable {
 
 
 
-    public void onReportsButtonClick(ActionEvent actionEvent) {
+    public void onReportsButtonClick(ActionEvent actionEvent) throws IOException {
+        switchScreen(actionEvent, "Reports.fxml", "Reports");
     }
 
     public void onActionAddAppointment(ActionEvent actionEvent) throws IOException {
@@ -128,10 +127,12 @@ public class MainMenuController implements Initializable {
             ModifyAppointmentController m = loader.getController();
             m.sendAppointment(selected);
 
-            Parent root = loader.getRoot();
+            Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("ModifyAppointment.fxml")));
+            Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
-            Stage window = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            window.setScene(scene);
+            stage.setTitle("Modify Appointment");
+            stage.setScene(scene);
+            stage.show();;
         }
     }
     public void onActionDeleteAppointment(ActionEvent actionEvent) {
@@ -147,12 +148,11 @@ public class MainMenuController implements Initializable {
 
     public void onActionAddCustomer(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("AddCustomer.fxml")));
-        Stage stage = new Stage();
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setTitle("Add Customer");
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(addCustomer.getScene().getWindow());
-        stage.showAndWait();
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void onActionModifyCustomer(ActionEvent actionEvent) throws IOException, SQLException {
@@ -169,23 +169,55 @@ public class MainMenuController implements Initializable {
             ModifyCustomerController m = loader.getController();
             m.sendCustomer(selected);
 
-            Parent root = loader.getRoot();
+            Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("ModifyCustomer.fxml")));
+            Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
-            Stage window = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
-            window.setScene(scene);
+            stage.setTitle("Modify Customer");
+            stage.setScene(scene);
+            stage.show();
         }
     }
 
-    public void onActionDeleteCustomer(ActionEvent actionEvent) {
+    public void onActionDeleteCustomer(ActionEvent actionEvent) throws SQLException {
         Customers selected = allCustomersTable.getSelectionModel().getSelectedItem();
 
         if (selected == null) {
             createWarningAlert("Invalid Selection", "Please select something", "Select a customer you wish to delete");
         }
         else {
-            //TODO write delete customer logic
-        }
+            int id = selected.getCustomerID();
+            String name = selected.getCustomerName();
 
+            Alert del = new Alert(Alert.AlertType.CONFIRMATION);
+            del.setHeaderText("Delete Customer");
+            del.setContentText("Are you sure you want to delete " + name + "?");
+            Optional<ButtonType> result = del.showAndWait();
+
+        if (result.get() == ButtonType.OK) {
+            // verify customer has no appointments
+            int numAppointments = customerAccess.checkForAppointment(id);
+            if (numAppointments> 0)  {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setHeaderText("Must delete " + name + " appointments before they can be removed");
+                alert.showAndWait();
+            }
+            else {
+                customerAccess.deleteCustomer(id, name);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Customer Delete");
+                alert.setContentText("Customer " + name + " was successfully deleted!");
+                alert.showAndWait();
+                allCustomersTable.setItems(customerAccess.getAllCustomers());
+                allAppointmentsTable.setItems(appointmentAccess.getAllAppointments());
+            }
+            }
+            else if (result.get() == ButtonType.CANCEL){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Customer Delete");
+                alert.setContentText("Unable to delete " + name);
+                alert.showAndWait();
+            }
+        }
     }
 
     public void onLogoutButtonClick(ActionEvent actionEvent) throws IOException {
@@ -238,7 +270,5 @@ public class MainMenuController implements Initializable {
         // set items in table views
         allCustomersTable.setItems(allCustomers);
         allAppointmentsTable.setItems(allAppointments);
-
-        // if appointments are within 15 minutes, notify the user
     }
 }

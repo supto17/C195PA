@@ -5,9 +5,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.example.c195pa.model.Contacts;
 
+import javax.xml.transform.Result;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.PropertyResourceBundle;
 
 public class contactsAccess {
     public static ObservableList<Contacts> getAllContacts() throws SQLException {
@@ -42,5 +44,21 @@ public class contactsAccess {
             contacts.add(rs.getString("Contact_Name"));
         }
         return contacts;
+    }
+
+    public static int getCustomerID(String contactName) throws SQLException {
+        int customerID = 0;
+        PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT Contact_ID FROM contacts WHERE Contact_Name=?;");
+        ps.setString(1, contactName);
+
+        try {
+            ResultSet rs = ps.executeQuery();
+            customerID = rs.getInt("Contact_ID");
+            ps.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customerID;
     }
 }

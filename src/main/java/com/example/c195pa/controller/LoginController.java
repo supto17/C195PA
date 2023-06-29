@@ -25,16 +25,26 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
+    @FXML
     public TextField loginUsername;
+    @FXML
     public TextField loginPassword;
+    @FXML
     public Button loginButton;
+    @FXML
     public Button cancelButton;
+    @FXML
     public Label zoneLabel;
+    @FXML
     public RadioButton frenchButton;
+    @FXML
     public ToggleGroup languageGroup;
+    @FXML
     public RadioButton englishButton;
     @FXML
-    private Label welcomeText;
+    public Label loginLogo;
+    @FXML
+    public Label zoneLabelText;
 
     public void onActionLoginButton(ActionEvent actionEvent) throws IOException, SQLException {
 
@@ -108,9 +118,22 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         Locale userLocale = Locale.getDefault();
         zoneLabel.setText(ZoneId.systemDefault().toString());
-    }
+        /**
+        try {
+            if (Locale.getDefault().getLanguage().equals("fr") || frenchButton.isSelected()){
 
+                ResourceBundle rb = ResourceBundle.getBundle("language/language_fr.properties", Locale.getDefault());
+                loginButton.setText(rb.getString("LOGIN"));
+                frenchButton.setText(rb.getString("FRENCH"));
+
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+         **/
+    }
 }

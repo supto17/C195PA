@@ -14,30 +14,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ModifyAppointmentController implements Initializable {
-
-    public void toMainMenu (ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("MainMenu.fxml")));
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setTitle("Main Menu");
-        stage.setScene(scene);
-        stage.show();
-    }
     @FXML
     private ComboBox<String> appointmentContactBox;
 
@@ -73,6 +63,15 @@ public class ModifyAppointmentController implements Initializable {
 
     @FXML
     private ComboBox<Integer> apptUserID;
+
+    public void toMainMenu (ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("MainMenu.fxml")));
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setTitle("Main Menu");
+        stage.setScene(scene);
+        stage.show();
+    }
 
     public void sendAppointment(Appointments selected) throws SQLException {
         appointmentIDField.setText(Integer.toString(selected.getAppointmentID()));
@@ -117,6 +116,21 @@ public class ModifyAppointmentController implements Initializable {
         }
         apptStartTimeBox.setItems(appointmentTimes);
         apptEndTimeBox.setItems(appointmentTimes);
+
+        apptStartDatePicker.setDayCellFactory(dp -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                setDisable(empty || item.getDayOfWeek() == DayOfWeek.SATURDAY || item.getDayOfWeek() == DayOfWeek.SUNDAY);
+            }
+        });
+        apptEndDatePicker.setDayCellFactory(dp -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                setDisable(empty || item.getDayOfWeek() == DayOfWeek.SATURDAY || item.getDayOfWeek() == DayOfWeek.SUNDAY);
+            }
+        });
     }
 }
 

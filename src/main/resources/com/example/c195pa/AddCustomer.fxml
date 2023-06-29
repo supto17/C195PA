@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="607.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.c195pa.controller.AddCustomerController">
+<AnchorPane prefHeight="607.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.c195pa.controller.AddCustomerController">
    <children>
       <VBox layoutX="28.0" layoutY="97.0" prefHeight="416.0" prefWidth="152.0" spacing="40.0">
          <children>
@@ -49,7 +49,7 @@
             </Text>
          </children>
       </VBox>
-      <VBox layoutX="213.0" layoutY="97.0" prefHeight="409.0" prefWidth="196.0" spacing="35.0">
+      <VBox layoutX="213.0" layoutY="97.0" prefHeight="409.0" prefWidth="196.0" spacing="39.0">
          <children>
             <TextField fx:id="customerIdField" editable="false" prefHeight="25.0" prefWidth="231.0" text="Autogen">
                <font>

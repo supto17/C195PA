@@ -5,6 +5,7 @@ import com.example.c195pa.model.Logon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.example.c195pa.model.Customers;
+import javafx.scene.control.Alert;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +23,7 @@ public class customerAccess {
         try {
             String sql =  "SELECT cu.Customer_ID, cu.Customer_Name, cu.Address, cu.Postal_Code, cu.Phone, cu.Division_ID, " +
                     "f.Division, f.COUNTRY_ID, co.Country FROM customers as cu INNER JOIN first_level_divisions " +
-                    "as f on cu.Division_ID = f.Division_ID INNER JOIN countries as co ON f.COUNTRY_ID = co.Country_ID";
+                    "as f on cu.Division_ID = f.Division_ID INNER JOIN countries as co ON f.COUNTRY_ID = co.Country_ID ORDER BY Customer_ID";
 
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -67,7 +68,8 @@ public class customerAccess {
         ps.setInt(8, customerID);
 
         try {
-            ps.executeQuery();
+            System.out.println(ps.toString());
+            ps.executeUpdate();
             ps.close();
             return true;
         }
@@ -99,7 +101,7 @@ public class customerAccess {
         ps.setInt(9, customerAccess.getUserDivisionID(division));
 
         try {
-            ps.executeQuery();
+            ps.executeUpdate();
             ps.close();
             return true;
         }
@@ -108,7 +110,19 @@ public class customerAccess {
             ps.close();
             return false;
         }
+    }
 
+    public static void deleteCustomer(int customerID, String customerName) throws SQLException {
+
+        PreparedStatement ps = JDBC.getConnection().prepareStatement("DELETE FROM customers WHERE Customer_ID=? AND Customer_Name=?");
+        ps.setInt(1, customerID);
+        ps.setString(2, customerName);
+
+        try {
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static String getState(int divisionID) throws SQLException {
@@ -158,6 +172,7 @@ public class customerAccess {
 
         String sql = "SELECT Division_ID FROM first_level_divisions WHERE Division = ?;";
         PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+        ps.setString(1,division);
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
@@ -179,5 +194,26 @@ public class customerAccess {
             i.add(rs.getInt("Customer_ID"));
         }
         return i;
+    }
+
+    //todo weird error ASK INSTRUCTOR
+    public static int checkForAppointment(int customerID) throws SQLException {
+        int appointments = 0;
+        PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT COUNT(Customer_ID) FROM appointments WHERE Customer_ID=?");
+        ps.setString(1, String.valueOf(customerID));
+
+        try {
+            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+            System.out.println(ps.toString());
+            System.out.println(rs.toString());
+            appointments = rs.getInt(1);
+            System.out.println(appointments);
+            ps.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return appointments;
     }
 }

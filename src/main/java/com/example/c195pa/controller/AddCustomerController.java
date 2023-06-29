@@ -87,15 +87,15 @@ public class AddCustomerController implements Initializable {
 
         //report success
         if (success) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setHeaderText("Appointment update successful");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Customer update successful");
             alert.showAndWait();
             toMainMenu(actionEvent);
         }
         // report failure to update
         else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText("Failed to update " + customerNameField.getText() + ".");
+            alert.setHeaderText("Failed to add " + customerNameField.getText() + ".");
             alert.showAndWait();
         }
     }
