@@ -5,6 +5,7 @@ import com.example.c195pa.model.Logon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.example.c195pa.model.Appointments;
+import javafx.scene.control.Alert;
 
 import java.sql.*;
 import java.time.*;
@@ -100,5 +101,72 @@ public class appointmentAccess {
             i.add(rs.getInt("Customer_ID"));
         }
         return i;
+    }
+
+    public static boolean deleteAppointment(int appointmentID) throws SQLException {
+        String sql = "DELETE FROM appointments WHERE Appointment_ID=?;";
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+        ps.setInt(1, appointmentID);
+
+        try {
+            ps.executeUpdate();
+            ps.close();
+            return true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            ps.close();
+            return false;
+        }
+    }
+
+    public static ObservableList<Appointments> getAppointmentsByContact(String contactName) throws SQLException {
+
+        ObservableList<Appointments> appointmentsByContact = FXCollections.observableArrayList();
+
+        Integer cID = contactsAccess.getContactID(contactName);
+        PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT * FROM appointments WHERE Contact_ID=?");
+        ps.setInt(1, cID);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            int appointmentID = rs.getInt("Appointment_ID");
+            String title = rs.getString("Title");
+            String description = rs.getString("Description");
+            String location = rs.getString("Location");
+            String type = rs.getString("Type");
+            Timestamp startTime = rs.getTimestamp("Start");
+            LocalTime end = rs.getTimestamp("End").toLocalDateTime().toLocalTime();
+            LocalDate localDate = startTime.toLocalDateTime().toLocalDate();
+            LocalTime start = startTime.toLocalDateTime().toLocalTime();
+            int customerID = rs.getInt("Customer_ID");
+            int userID = rs.getInt("User_ID");
+            int contactID = rs.getInt("Contact_ID");
+            String contact = contactName;
+            LocalDateTime dateTime = rs.getTimestamp("Start").toLocalDateTime();
+
+            Appointments a = new Appointments(appointmentID, title, description, location, type,
+                    start, end, localDate, customerID, userID, contactID, contact, dateTime);
+            appointmentsByContact.add(a);
+        }
+        return appointmentsByContact;
+    }
+
+    public static ObservableList<Appointments> populateAppointmentsByMonth() throws SQLException {
+
+        ObservableList<Appointments> s = FXCollections.observableArrayList();
+        String sql = "SELECT MONTHNAME(Start), Type, COUNT(*) FROM Appointments" +
+                " GROUP BY MONTHNAME(Start), Type;";
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            String month = rs.getString("MONTHNAME(Start)");
+            String type = rs.getString("Type");
+            int count = rs.getInt("Count(*)");
+            Appointments a = new Appointments(month, type, count);
+            s.add(a);
+        }
+        return s;
     }
 }

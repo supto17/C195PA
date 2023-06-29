@@ -127,22 +127,46 @@ public class MainMenuController implements Initializable {
             ModifyAppointmentController m = loader.getController();
             m.sendAppointment(selected);
 
-            Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("ModifyAppointment.fxml")));
+
             Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
+            Parent scene = loader.getRoot();
             stage.setTitle("Modify Appointment");
-            stage.setScene(scene);
+            stage.setScene(new Scene(scene));
             stage.show();;
         }
     }
-    public void onActionDeleteAppointment(ActionEvent actionEvent) {
+    public void onActionDeleteAppointment(ActionEvent actionEvent) throws SQLException {
         Appointments selected = allAppointmentsTable.getSelectionModel().getSelectedItem();
 
         if (selected == null) {
             createWarningAlert("Invalid Selection", "Please select something", "Select an appointment you wish to delete");
         }
         else {
-            //TODO write delete appointment logic
+            int apptID = selected.getAppointmentID();
+            Alert del = new Alert(Alert.AlertType.CONFIRMATION);
+            del.setHeaderText("Delete Customer");
+            del.setContentText("Are you sure you want to delete appointment " + apptID + "?");
+            Optional<ButtonType> result = del.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                boolean success = appointmentAccess.deleteAppointment(apptID);
+                if (success) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText("Customer Delete");
+                    alert.setContentText("Appointment " + apptID + " was successfully deleted!");
+                    alert.showAndWait();
+                    allAppointmentsTable.setItems(appointmentAccess.getAllAppointments());
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setContentText("Unable to delete appointment " + apptID);
+                    alert.showAndWait();
+                }
+            } else if (result.isPresent() && result.get() == ButtonType.CANCEL) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Appointment Delete");
+                alert.setContentText("Appointment " + apptID + " was not deleted.");
+                alert.showAndWait();
+            }
         }
     }
 
@@ -165,16 +189,14 @@ public class MainMenuController implements Initializable {
             createWarningAlert("Invalid Selection", "Please select something", "Select a customer you wish to edit");
         }
         else {
-
             ModifyCustomerController m = loader.getController();
             m.sendCustomer(selected);
 
-            Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("ModifyCustomer.fxml")));
             Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
+            Parent scene = loader.getRoot();
             stage.setTitle("Modify Customer");
-            stage.setScene(scene);
-            stage.show();
+            stage.setScene(new Scene(scene));
+            stage.show();;
         }
     }
 
@@ -193,10 +215,10 @@ public class MainMenuController implements Initializable {
             del.setContentText("Are you sure you want to delete " + name + "?");
             Optional<ButtonType> result = del.showAndWait();
 
-        if (result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             // verify customer has no appointments
             int numAppointments = customerAccess.checkForAppointment(id);
-            if (numAppointments> 0)  {
+            if (numAppointments > 0)  {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setHeaderText("Must delete " + name + " appointments before they can be removed");
                 alert.showAndWait();
@@ -212,9 +234,9 @@ public class MainMenuController implements Initializable {
             }
             }
             else if (result.get() == ButtonType.CANCEL){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText("Customer Delete");
-                alert.setContentText("Unable to delete " + name);
+                alert.setContentText(name + " was not deleted.");
                 alert.showAndWait();
             }
         }

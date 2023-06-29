@@ -46,19 +46,21 @@ public class contactsAccess {
         return contacts;
     }
 
-    public static int getCustomerID(String contactName) throws SQLException {
-        int customerID = 0;
+    public static int getContactID(String contactName) throws SQLException {
+        int contactID = 0;
         PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT Contact_ID FROM contacts WHERE Contact_Name=?;");
         ps.setString(1, contactName);
 
         try {
             ResultSet rs = ps.executeQuery();
-            customerID = rs.getInt("Contact_ID");
+            while (rs.next()) {
+                contactID = rs.getInt("Contact_ID");
+            }
             ps.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
-        return customerID;
+        return contactID;
     }
 }

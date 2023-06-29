@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Appointments {
+    private String month;
+    private String type;
+    private int count;
     private int appointmentID;
     private String title;
     private String description;
@@ -35,6 +38,12 @@ public class Appointments {
         this.contactID = contactID;
         this.contact = contact;
         this.dateTime = dateTime;
+    }
+
+    public Appointments(String month, String type, int count) {
+        this.month = month;
+        this.type = type;
+        this.count = count;
     }
 
     /**
@@ -115,4 +124,9 @@ public class Appointments {
     public String getContact() {return contact;}
 
     public LocalDateTime getDateTime() { return dateTime; }
+    public String getMonth() {return month;}
+
+    public String getType() {return type;}
+
+    public int getCount() {return count;}
 }

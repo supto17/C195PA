@@ -95,7 +95,7 @@ public class AddAppointmentController implements Initializable {
             Integer customerID = apptCustomerID.getSelectionModel().getSelectedItem();
             Integer userID = apptUserID.getSelectionModel().getSelectedItem();
 
-            int contactID = contactsAccess.getCustomerID(contact);
+            int contactID = contactsAccess.getContactID(contact);
 
             boolean success = appointmentAccess.addAppointment(title, description, location, type, startDate, endDate, startTime, endTime , customerID, userID, contactID);
 

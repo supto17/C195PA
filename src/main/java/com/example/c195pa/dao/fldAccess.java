@@ -13,6 +13,9 @@ public class fldAccess {
 
     public ObservableList<FirstLevelDivisions> fldObservableList = FXCollections.observableArrayList();
 
+    public fldAccess() throws SQLException {
+    }
+
     public ObservableList<FirstLevelDivisions> getAllFLD() throws SQLException {
 
         try {
@@ -32,5 +35,24 @@ public class fldAccess {
             e.printStackTrace();
         }
         return fldObservableList;
+    }
+
+    public static ObservableList<FirstLevelDivisions> getCustomersByDivision() throws SQLException {
+
+        ObservableList<FirstLevelDivisions> customersByDivision = FXCollections.observableArrayList();
+
+        String sql = "SELECT Division, COUNT(Customer_ID) FROM first_level_divisions f " +
+                "JOIN customers c ON f.Division_ID = c.Division_ID GROUP BY Division ORDER BY COUNT(CUSTOMER_ID) DESC;";
+
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()) {
+            String s = rs.getString("Division");
+            int i = rs.getInt("Count(Customer_ID)");
+            FirstLevelDivisions f = new FirstLevelDivisions(s, i);
+            customersByDivision.add(f);
+        }
+        return customersByDivision;
     }
 }

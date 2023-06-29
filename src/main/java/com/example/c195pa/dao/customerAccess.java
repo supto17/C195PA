@@ -200,20 +200,13 @@ public class customerAccess {
     public static int checkForAppointment(int customerID) throws SQLException {
         int appointments = 0;
         PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT COUNT(Customer_ID) FROM appointments WHERE Customer_ID=?");
-        ps.setString(1, String.valueOf(customerID));
+        ps.setInt(1, customerID);
+        ResultSet rs = ps.executeQuery();
 
-        try {
-            ps.executeQuery();
-            ResultSet rs = ps.executeQuery();
-            System.out.println(ps.toString());
-            System.out.println(rs.toString());
+        while (rs.next()) {
             appointments = rs.getInt(1);
-            System.out.println(appointments);
-            ps.close();
         }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+        ps.close();
         return appointments;
     }
 }
