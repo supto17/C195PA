@@ -153,7 +153,7 @@ public class MainMenuController implements Initializable {
                 if (success) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText("Customer Delete");
-                    alert.setContentText("Appointment " + apptID + " was successfully deleted!");
+                    alert.setContentText("Appointment " + apptID + " of type " + selected.getAppointmentType() + " was successfully deleted!");
                     alert.showAndWait();
                     allAppointmentsTable.setItems(appointmentAccess.getAllAppointments());
                 } else {

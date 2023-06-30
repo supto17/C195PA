@@ -73,9 +73,9 @@ public class appointmentAccess {
         ps.setString(5, String.valueOf(start));
         ps.setString(6, String.valueOf(end));
         ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(f));
-        ps.setString(8, Logon.getLoggedOnUser().toString());
+        ps.setString(8, Logon.getLoggedOnUser().getUsername());
         ps.setString(9, ZonedDateTime.now(ZoneOffset.UTC).format(f));
-        ps.setString(10, Logon.getLoggedOnUser().toString());
+        ps.setString(10, Logon.getLoggedOnUser().getUsername());
         ps.setInt(11, customerID);
         ps.setInt(12, userID);
         ps.setInt(13, contactID);
@@ -90,6 +90,10 @@ public class appointmentAccess {
             return false;
         }
     }
+
+    //TODO update appointment logic
+    //public static boolean updateAppointment(Appointments a) throws SQLException{
+    //}
 
     public static ObservableList<Integer> getUserIDs() throws SQLException {
         ObservableList<Integer> i = FXCollections.observableArrayList();

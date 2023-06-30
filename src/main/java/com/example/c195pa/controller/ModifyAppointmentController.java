@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -97,8 +98,37 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     @FXML
-    void saveButtonClicked(ActionEvent event) {
+    void saveButtonClicked(ActionEvent event) throws SQLException {
 
+        try {
+            int id = Integer.parseInt(appointmentIDField.getText());
+            String title = appointmentTitleField.getText();
+            String description = appointmentDescriptionField.getText();
+            String location = appointmentLocationField.getText();
+            String contact = appointmentContactBox.getSelectionModel().getSelectedItem();
+            String type = appointmentTypeField.getText();
+            LocalDate date = apptStartDatePicker.getValue();
+            LocalTime startTime = LocalTime.parse(apptStartTimeBox.getSelectionModel().getSelectedItem());
+            LocalTime endTime = LocalTime.parse(apptEndTimeBox.getSelectionModel().getSelectedItem());
+            int customerID = apptCustomerID.getSelectionModel().getSelectedItem();
+            int userID = apptUserID.getSelectionModel().getSelectedItem();
+            LocalDateTime l = LocalDateTime.now();
+
+            Appointments a = new Appointments(id, title, description,location,type,startTime,endTime,
+                              date,customerID,userID,contactsAccess.getContactID(contact),contact,l);
+
+           // boolean success = appointmentAccess.updateAppointment(a);
+           //     boolean success = true;
+           // if (success) {
+                //let user know it worked
+           // }
+            //else {
+                //tell them it didnt
+            //}
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -14,15 +14,23 @@ import java.util.TimeZone;
 
 public class Logon {
 
-    public Logon() {
-    }
     private static Users loggedOnUser;
     private static Locale userLocale;
     private static ZoneId userZoneID;
+    private int userID;
+    private String username;
+    private String password;
+
+    public Logon(int userID, String username,  String password) {
+        this.userID = userID;
+        this.username = username;
+        this.password = password;
+    }
 
     public static boolean loginAttempt(String username, String password) throws SQLException {
 
-        PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT * FROM users WHERE User_Name = ? AND Password = ?");
+        PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT User_ID, User_name, Password  " +
+                "FROM users WHERE User_Name = ? AND Password = ?");
         ps.setString(1, username);
         ps.setString(2, password);
         ResultSet rs = ps.executeQuery();
@@ -33,16 +41,23 @@ public class Logon {
             //TODO log failed in attempt
         }
         else {
-            loggedOnUser = new Users(rs.getInt("User_ID"), rs.getString("User_Name"),
-                    rs.getString("Password"));
+            while (rs.next()) {
+                int userID = rs.getInt("User_ID");
+                username = rs.getString("User_Name");
+                password = rs.getString("Password");
+                loggedOnUser = new Users(userID, username, password);
+            }
             userLocale = Locale.getDefault();
             userZoneID = ZoneId.systemDefault();
             ps.close();
             return true;
         }
     }
+    public int getUserID() {return userID;}
 
+    public String getUsername() {return username;}
 
+    public String getPassword() {return password;}
 
     public static Users getLoggedOnUser() {
         return loggedOnUser;
