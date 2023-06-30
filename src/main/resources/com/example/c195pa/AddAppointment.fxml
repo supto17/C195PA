@@ -85,15 +85,15 @@
          <children>
             <TextField fx:id="appointmentIDField" editable="false" promptText="AutoGen">
                <font>
-                  <Font size="14.0" />
+                  <Font name="System Italic" size="14.0" />
                </font></TextField>
             <TextField fx:id="appointmentTitleField" />
             <TextField fx:id="appointmentDescriptionField" />
             <TextField fx:id="appointmentLocationField" />
             <ComboBox fx:id="appointmentContactBox" prefHeight="26.0" prefWidth="237.0" />
             <TextField fx:id="appointmentTypeField" layoutX="10.0" layoutY="109.0" />
-            <DatePicker fx:id="apptStartDatePicker" prefHeight="26.0" prefWidth="234.0" />
-            <DatePicker fx:id="apptEndDatePicker" layoutX="10.0" layoutY="208.0" prefHeight="26.0" prefWidth="234.0" />
+            <DatePicker fx:id="apptStartDatePicker" editable="false" prefHeight="26.0" prefWidth="234.0" />
+            <DatePicker fx:id="apptEndDatePicker" editable="false" layoutX="10.0" layoutY="208.0" prefHeight="26.0" prefWidth="234.0" />
             <ComboBox fx:id="apptStartTimeBox" layoutX="10.0" layoutY="142.0" prefHeight="26.0" prefWidth="237.0" />
             <ComboBox fx:id="apptEndTimeBox" layoutX="10.0" layoutY="274.0" prefHeight="26.0" prefWidth="237.0" />
             <ComboBox fx:id="apptCustomerID" layoutX="10.0" layoutY="307.0" prefHeight="26.0" prefWidth="237.0" />

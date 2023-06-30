@@ -1,7 +1,7 @@
 package com.example.c195pa.dao;
 
+import com.example.c195pa.controller.ModifyAppointmentController;
 import com.example.c195pa.helper.JDBC;
-import com.example.c195pa.model.Logon;
 import com.example.c195pa.model.Users;
 import com.mysql.cj.log.Log;
 import javafx.collections.FXCollections;
@@ -14,6 +14,14 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 public class appointmentAccess {
+
+    public static Alert createWarningAlert(String header, String context) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setHeaderText(header);
+        alert.setContentText(context);
+        alert.showAndWait();
+        return alert;
+    }
 
     public static ObservableList<Appointments> getAllAppointments() throws SQLException {
 
@@ -60,6 +68,9 @@ public class appointmentAccess {
         DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         LocalDateTime start = LocalDateTime.of(startDate, startTime);
         LocalDateTime end = LocalDateTime.of(endDate, endTime);
+        Users test = Users.getLoggedOnUser();
+        String u = test.getUsername();
+        System.out.println(u);
 
 
         String sql = "INSERT INTO appointments "
@@ -68,20 +79,20 @@ public class appointmentAccess {
                 "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?);";
         PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
-        ps.setString(1,title);
+        ps.setString(1, title);
         ps.setString(2, description);
         ps.setString(3, location);
         ps.setString(4, type);
         ps.setString(5, String.valueOf(start));
         ps.setString(6, String.valueOf(end));
         ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(f));
-        ps.setString(8, Logon.getLoggedOnUser().getUsername());
+        ps.setString(8, u);
         ps.setString(9, ZonedDateTime.now(ZoneOffset.UTC).format(f));
-        ps.setString(10, Logon.getLoggedOnUser().getUsername());
+        ps.setString(10, u);
         ps.setInt(11, customerID);
         ps.setInt(12, userID);
         ps.setInt(13, contactID);
-
+        System.out.println(ps);
         try {
             ps.executeUpdate();
             ps.close();
@@ -105,9 +116,15 @@ public class appointmentAccess {
         LocalDateTime start = LocalDateTime.of(startDate, startTime);
         LocalDateTime end = LocalDateTime.of(endDate, endTime);
 
+        if(startDate.isAfter(endDate) || startDate != endDate) {
+            appointmentAccess.createWarningAlert("Invalid Dates", "Due to business constraints, appointment start date and end date must be on the same day");
+            return false;
+        }
+
+
         System.out.println(start);
         System.out.println(end);
-        Users test = Logon.getLoggedOnUser();
+        Users test = Users.getLoggedOnUser();
         String u = test.getUsername();
         System.out.println(u);
 
@@ -121,11 +138,11 @@ public class appointmentAccess {
             ps.setString(1, a.getTitle());
             ps.setString(2, a.getDescription());
             ps.setString(3, a.getLocation());
-            ps.setString(4, a.getType());
+            ps.setString(4, a.getAppointmentType());
             ps.setString(5, String.format(String.valueOf(start), f));
             ps.setString(6, String.format(String.valueOf(end), f));
             ps.setString(7, String.format(String.valueOf(LocalDateTime.now()), f));
-            ps.setString(8, String.valueOf(Logon.getLoggedOnUser()));
+            ps.setString(8, u);
             ps.setInt(9, a.getCustomerID());
             ps.setInt(10, a.getUserID());
             ps.setInt(11, contactsAccess.getContactID(a.contact));
@@ -221,5 +238,75 @@ public class appointmentAccess {
             s.add(a);
         }
         return s;
+    }
+
+    public static ObservableList<Appointments> viewByWeek() throws SQLException {
+
+        ObservableList<Appointments> viewByWeek = FXCollections.observableArrayList();
+
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT * FROM appointments WHERE WEEK(Start) = WEEK(current_date());");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int appointmentID = rs.getInt("Appointment_ID");
+                String title = rs.getString("Title");
+                String description = rs.getString("Description");
+                String location = rs.getString("Location");
+                String type = rs.getString("Type");
+                Timestamp startTime = rs.getTimestamp("Start");
+                LocalTime end = rs.getTimestamp("End").toLocalDateTime().toLocalTime();
+                LocalDate localDate = startTime.toLocalDateTime().toLocalDate();
+                LocalTime start = startTime.toLocalDateTime().toLocalTime();
+                int customerID = rs.getInt("Customer_ID");
+                int userID = rs.getInt("User_ID");
+                int contactID = rs.getInt("Contact_ID");
+                String contact = contactsAccess.getContactName(contactID);
+                LocalDateTime dateTime = rs.getTimestamp("Start").toLocalDateTime();
+
+                Appointments a = new Appointments(appointmentID, title, description, location, type,
+                        start, end, localDate, customerID, userID, contactID, contact, dateTime);
+                viewByWeek.add(a);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return viewByWeek;
+    }
+
+    public static ObservableList<Appointments> viewByMonth() throws SQLException {
+
+        ObservableList<Appointments> viewByMonth = FXCollections.observableArrayList();
+
+        try {
+            PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT * FROM appointments WHERE MONTH(Start) = MONTH(current_date());");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int appointmentID = rs.getInt("Appointment_ID");
+                String title = rs.getString("Title");
+                String description = rs.getString("Description");
+                String location = rs.getString("Location");
+                String type = rs.getString("Type");
+                Timestamp startTime = rs.getTimestamp("Start");
+                LocalTime end = rs.getTimestamp("End").toLocalDateTime().toLocalTime();
+                LocalDate localDate = startTime.toLocalDateTime().toLocalDate();
+                LocalTime start = startTime.toLocalDateTime().toLocalTime();
+                int customerID = rs.getInt("Customer_ID");
+                int userID = rs.getInt("User_ID");
+                int contactID = rs.getInt("Contact_ID");
+                String contact = contactsAccess.getContactName(contactID);
+                LocalDateTime dateTime = rs.getTimestamp("Start").toLocalDateTime();
+
+                Appointments a = new Appointments(appointmentID, title, description, location, type,
+                        start, end, localDate, customerID, userID, contactID, contact, dateTime);
+                viewByMonth.add(a);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return viewByMonth;
     }
 }

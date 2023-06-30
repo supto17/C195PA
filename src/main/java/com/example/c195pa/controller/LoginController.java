@@ -46,8 +46,20 @@ public class LoginController implements Initializable {
     @FXML
     public Label zoneLabelText;
 
+    public Locale getLocale() {
+        Locale userLocale = null;
+        if (frenchButton.isSelected()) {
+            userLocale = Locale.FRENCH;
+        }
+        else {
+            userLocale = Locale.ENGLISH;
+        }
+        return userLocale;
+    }
+
     public void onActionLoginButton(ActionEvent actionEvent) throws IOException, SQLException {
 
+        ResourceBundle rb = ResourceBundle.getBundle("language", getLocale());
 
         String username = loginUsername.getText();
         String password = loginPassword.getText();
@@ -94,15 +106,13 @@ public class LoginController implements Initializable {
                 alert.showAndWait();
             }
         }   else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Invalid Logon");
-            alert.setHeaderText("Invalid Username or Password");
-            alert.setContentText("Please try again.");
-            alert.showAndWait();
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle(rb.getString("ERROR"));
+                alert.setHeaderText(rb.getString("INVALID") + " " + (rb.getString("LOGIN")));
+                alert.setContentText(rb.getString("PLEASE") + " " + rb.getString("TRY") + " " + (rb.getString("AGAIN")));
+                alert.showAndWait();
+            }
         }
-
-
-    }
 
     public void onActionCancelButton(ActionEvent actionEvent) {
         JDBC.closeConnection();
@@ -110,30 +120,49 @@ public class LoginController implements Initializable {
     }
 
     public void onActionFrenchButtonPressed(ActionEvent actionEvent) {
-
+        ResourceBundle rb = ResourceBundle.getBundle("language", Locale.FRENCH);
+        loginButton.setText(rb.getString("LOGIN"));
+        frenchButton.setText(rb.getString("FRENCH"));
+        englishButton.setText(rb.getString("ENGLISH"));
+        loginLogo.setText(rb.getString("LOGIN"));
+        zoneLabelText.setText(rb.getString("TIMEZONE"));
+        loginUsername.setPromptText(rb.getString("USERNAME"));
+        loginPassword.setPromptText(rb.getString("PASSWORD"));
+        cancelButton.setText(rb.getString("CANCEL"));
     }
 
     public void onActionEnglishButtonPressed(ActionEvent actionEvent) {
+        ResourceBundle rb = ResourceBundle.getBundle("language", Locale.ENGLISH);
+        loginButton.setText(rb.getString("LOGIN"));
+        frenchButton.setText(rb.getString("FRENCH"));
+        englishButton.setText(rb.getString("ENGLISH"));
+        loginLogo.setText(rb.getString("LOGIN"));
+        zoneLabelText.setText(rb.getString("TIMEZONE"));
+        loginUsername.setPromptText(rb.getString("USERNAME"));
+        loginPassword.setPromptText(rb.getString("PASSWORD"));
+        cancelButton.setText(rb.getString("CANCEL"));
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Locale userLocale = Locale.getDefault();
         zoneLabel.setText(ZoneId.systemDefault().toString());
-        /**
-        try {
-            if (Locale.getDefault().getLanguage().equals("fr") || frenchButton.isSelected()){
 
-                ResourceBundle rb = ResourceBundle.getBundle("language/language_fr.properties", Locale.getDefault());
+                ResourceBundle rb = ResourceBundle.getBundle("language", userLocale);
                 loginButton.setText(rb.getString("LOGIN"));
                 frenchButton.setText(rb.getString("FRENCH"));
+                englishButton.setText(rb.getString("ENGLISH"));
+                loginLogo.setText(rb.getString("LOGIN"));
+                zoneLabelText.setText(rb.getString("TIMEZONE"));
+                loginUsername.setPromptText(rb.getString("USERNAME"));
+                loginPassword.setPromptText(rb.getString("PASSWORD"));
+                cancelButton.setText(rb.getString("CANCEL"));
 
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-         **/
+                if (userLocale == Locale.FRENCH) {
+                    frenchButton.setSelected(true);
+                }
+                else {
+                    englishButton.setSelected(true);
+                }
     }
 }

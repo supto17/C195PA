@@ -86,7 +86,7 @@ public class AddAppointmentController implements Initializable {
             String title = appointmentTitleField.getText();
             String description = appointmentDescriptionField.getText();
             String location = appointmentLocationField.getText();
-            String contact = appointmentContactBox.getSelectionModel().getSelectedItem().toString();
+            String contact = appointmentContactBox.getSelectionModel().getSelectedItem();
             String type = appointmentTypeField.getText();
             LocalDate startDate = apptStartDatePicker.getValue();
             LocalDate endDate = apptEndDatePicker.getValue();

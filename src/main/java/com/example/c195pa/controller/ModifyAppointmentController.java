@@ -65,6 +65,14 @@ public class ModifyAppointmentController implements Initializable {
     @FXML
     private ComboBox<Integer> apptUserID;
 
+    public Alert createWarningAlert(String header, String context) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setHeaderText(header);
+        alert.setContentText(context);
+        alert.showAndWait();
+        return alert;
+    }
+
     public void toMainMenu (ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("MainMenu.fxml")));
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -107,15 +115,19 @@ public class ModifyAppointmentController implements Initializable {
             String location = appointmentLocationField.getText();
             String contact = appointmentContactBox.getSelectionModel().getSelectedItem();
             String type = appointmentTypeField.getText();
-            LocalDate date = apptStartDatePicker.getValue();
+            LocalDate startDate = apptStartDatePicker.getValue();
+            LocalDate endDate = apptEndDatePicker.getValue();
             LocalTime startTime = LocalTime.parse(apptStartTimeBox.getSelectionModel().getSelectedItem());
             LocalTime endTime = LocalTime.parse(apptEndTimeBox.getSelectionModel().getSelectedItem());
             int customerID = apptCustomerID.getSelectionModel().getSelectedItem();
             int userID = apptUserID.getSelectionModel().getSelectedItem();
             LocalDateTime l = LocalDateTime.now();
 
+            if(startDate.isAfter(endDate) || startDate != endDate) {
+                createWarningAlert("Invalid Dates", "Due to business constraints, appointment start date and end date must be on the same day");
+            }
             Appointments a = new Appointments(id, title, description,location,type,startTime,endTime,
-                              date,customerID,userID,contactsAccess.getContactID(contact),contact,l);
+                              startDate,customerID,userID,contactsAccess.getContactID(contact),contact,l);
 
             boolean success = appointmentAccess.updateAppointment(a);
             if (success) {

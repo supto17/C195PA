@@ -51,7 +51,7 @@
       </VBox>
       <VBox layoutX="213.0" layoutY="97.0" prefHeight="409.0" prefWidth="196.0" spacing="39.0">
          <children>
-            <TextField fx:id="customerIdField" editable="false" prefHeight="25.0" prefWidth="231.0" text="Autogen">
+            <TextField fx:id="customerIdField" disable="true" editable="false" prefHeight="25.0" prefWidth="231.0" promptText="Autogen">
                <font>
                   <Font name="System Italic" size="13.0" />
                </font></TextField>

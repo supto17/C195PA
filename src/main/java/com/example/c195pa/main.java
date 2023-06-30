@@ -32,6 +32,7 @@ public class main extends Application {
         launch(args);
         JDBC.closeConnection();
 
-
+        //TODO document lambdas
+        //TODO Javadocs
     }
 }

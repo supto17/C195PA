@@ -12,12 +12,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="368.0" prefWidth="428.0" style="-fx-background-color: #212121;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.c195pa.controller.LoginController">
    <children>
-      <Label fx:id="loginLogo" alignment="TOP_CENTER" layoutX="137.0" layoutY="47.0" prefHeight="60.0" prefWidth="154.0" text="Login" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="loginLogo" alignment="TOP_CENTER" layoutX="57.0" layoutY="69.0" prefHeight="53.0" prefWidth="315.0" text="Login" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font name="System Bold" size="48.0" />
+            <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <AnchorPane layoutX="179.0" layoutY="118.0" prefHeight="5.0" prefWidth="70.0" style="-fx-background-color: #00FF00;" />
+      <AnchorPane layoutX="179.0" layoutY="135.0" prefHeight="5.0" prefWidth="70.0" style="-fx-background-color: #00FF00;" />
       <TextField fx:id="loginUsername" layoutX="106.0" layoutY="171.0" prefHeight="26.0" prefWidth="216.0" promptText="Username" />
       <TextField fx:id="loginPassword" layoutX="106.0" layoutY="230.0" prefHeight="26.0" prefWidth="216.0" promptText="Password" />
       <Button fx:id="loginButton" layoutX="211.0" layoutY="298.0" mnemonicParsing="false" onAction="#onActionLoginButton" prefHeight="35.0" prefWidth="154.0" style="-fx-background-color: #00FF00; -fx-background-radius: 90;" text="Login" textAlignment="CENTER">
@@ -30,14 +30,14 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <HBox alignment="CENTER_RIGHT" layoutX="212.0" layoutY="6.0" prefHeight="39.0" prefWidth="205.0">
+      <HBox alignment="CENTER_RIGHT" layoutX="160.0" layoutY="6.0" prefHeight="39.0" prefWidth="257.0">
          <children>
-            <Label fx:id="zoneLabelText" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="68.0" text="Zone: " textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="zoneLabelText" alignment="CENTER_RIGHT" contentDisplay="BOTTOM" prefHeight="17.0" prefWidth="94.0" text="Zone: " textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="zoneLabel" alignment="CENTER" layoutX="85.0" layoutY="21.0" prefHeight="17.0" prefWidth="127.0" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="zoneLabel" alignment="CENTER" layoutX="85.0" layoutY="21.0" prefHeight="17.0" prefWidth="150.0" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>

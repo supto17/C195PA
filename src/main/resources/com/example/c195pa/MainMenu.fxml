@@ -2,13 +2,15 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="669.0" prefWidth="916.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.c195pa.controller.MainMenuController">
+<AnchorPane prefHeight="669.0" prefWidth="916.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.c195pa.controller.MainMenuController">
    <children>
       <AnchorPane prefHeight="332.0" prefWidth="1034.0">
          <children>
@@ -37,6 +39,17 @@
                   <Button fx:id="addAppointment" mnemonicParsing="false" onAction="#onActionAddAppointment" prefHeight="25.0" prefWidth="80.0" text="Add" />
                   <Button fx:id="updateAppointment" mnemonicParsing="false" onAction="#onActionUpdateAppointment" prefHeight="25.0" prefWidth="80.0" text="Edit" />
                   <Button fx:id="deleteAppointment" layoutX="89.0" layoutY="18.0" mnemonicParsing="false" onAction="#onActionDeleteAppointment" prefHeight="25.0" prefWidth="80.0" text="Delete" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="586.0" layoutY="20.0" prefHeight="30.0" prefWidth="348.0" spacing="15.0">
+               <children>
+                  <RadioButton fx:id="viewByWeek" mnemonicParsing="false" onAction="#viewByWeekSelected" text="View by Week">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="viewSort" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="viewByMonth" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewByMonthSelected" text="View by Month" toggleGroup="$viewSort" />
+                  <RadioButton fx:id="viewAll" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewAllSelected" text="View All" toggleGroup="$viewSort" />
                </children>
             </HBox>
          </children>

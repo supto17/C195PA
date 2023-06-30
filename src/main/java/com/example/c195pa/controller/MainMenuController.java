@@ -18,6 +18,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.time.LocalDate;
 
 import java.io.IOException;
@@ -86,6 +88,14 @@ public class MainMenuController implements Initializable {
     public Button updateAppointment;
     @FXML
     public Button exitButton;
+    @FXML
+    public RadioButton viewByWeek;
+    @FXML
+    public ToggleGroup viewSort;
+    @FXML
+    public RadioButton viewByMonth;
+    @FXML
+    public RadioButton viewAll;
 
 
     public void switchScreen(ActionEvent event, String path, String title) throws IOException {
@@ -153,7 +163,7 @@ public class MainMenuController implements Initializable {
                 if (success) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText("Customer Delete");
-                    alert.setContentText("Appointment " + apptID + " of type " + selected.getAppointmentType() + " was successfully deleted!");
+                    alert.setContentText("Appointment ID " + apptID + " of type " + selected.getAppointmentType() + " was successfully deleted!");
                     alert.showAndWait();
                     allAppointmentsTable.setItems(appointmentAccess.getAllAppointments());
                 } else {
@@ -253,6 +263,20 @@ public class MainMenuController implements Initializable {
         System.exit(0);
     }
 
+    public void viewByWeekSelected(ActionEvent actionEvent) throws SQLException {
+        ObservableList<Appointments> a = appointmentAccess.viewByWeek();
+        allAppointmentsTable.setItems(a);
+    }
+
+    public void viewByMonthSelected(ActionEvent actionEvent) throws SQLException {
+        ObservableList<Appointments> a = appointmentAccess.viewByMonth();
+        allAppointmentsTable.setItems(a);
+    }
+
+    public void viewAllSelected(ActionEvent actionEvent) throws SQLException {
+        allAppointmentsTable.setItems(appointmentAccess.getAllAppointments());
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Create observable list for tableviews
@@ -292,5 +316,6 @@ public class MainMenuController implements Initializable {
         // set items in table views
         allCustomersTable.setItems(allCustomers);
         allAppointmentsTable.setItems(allAppointments);
+        viewAll.setSelected(true);
     }
 }
