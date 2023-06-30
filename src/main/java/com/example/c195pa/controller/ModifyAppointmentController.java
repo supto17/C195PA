@@ -117,14 +117,10 @@ public class ModifyAppointmentController implements Initializable {
             Appointments a = new Appointments(id, title, description,location,type,startTime,endTime,
                               date,customerID,userID,contactsAccess.getContactID(contact),contact,l);
 
-           // boolean success = appointmentAccess.updateAppointment(a);
-           //     boolean success = true;
-           // if (success) {
-                //let user know it worked
-           // }
-            //else {
-                //tell them it didnt
-            //}
+            boolean success = appointmentAccess.updateAppointment(a);
+            if (success) {
+                toMainMenu(event);
+            }
         }
         catch (Exception e) {
             e.printStackTrace();

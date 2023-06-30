@@ -1,14 +1,14 @@
 package com.example.c195pa.model;
 
 public class Users {
-    private int userID;
-    private String username;
-    private String password;
+    private static int userID;
+    private static String username;
+    private static String password;
 
     public Users(int userID, String username, String password) {
-        this.userID = userID;
-        this.username = username;
-        this.password = password;
+        Users.userID = userID;
+        Users.username = username;
+        Users.password = password;
     }
 
     /**

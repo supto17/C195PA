@@ -2,6 +2,8 @@ package com.example.c195pa.dao;
 
 import com.example.c195pa.helper.JDBC;
 import com.example.c195pa.model.Logon;
+import com.example.c195pa.model.Users;
+import com.mysql.cj.log.Log;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.example.c195pa.model.Appointments;
@@ -92,8 +94,55 @@ public class appointmentAccess {
     }
 
     //TODO update appointment logic
-    //public static boolean updateAppointment(Appointments a) throws SQLException{
-    //}
+    public static boolean updateAppointment(Appointments a) throws SQLException{
+
+        LocalDate startDate = a.getLocalDate();
+        LocalDate endDate = a.getLocalDate();
+        LocalTime startTime = a.getStart();
+        LocalTime endTime = a.getEnd();
+
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        LocalDateTime start = LocalDateTime.of(startDate, startTime);
+        LocalDateTime end = LocalDateTime.of(endDate, endTime);
+
+        System.out.println(start);
+        System.out.println(end);
+        Users test = Logon.getLoggedOnUser();
+        String u = test.getUsername();
+        System.out.println(u);
+
+        String sql = "UPDATE appointments SET Title=?, Description=?, Location=?, Type=?, Start=?, End=?, " +
+                " Last_Update=?, Last_Updated_By=?, Customer_ID=?," +
+                " User_ID=?, Contact_ID=? WHERE Appointment_ID=?";
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
+
+        try {
+            ps.setString(1, a.getTitle());
+            ps.setString(2, a.getDescription());
+            ps.setString(3, a.getLocation());
+            ps.setString(4, a.getType());
+            ps.setString(5, String.format(String.valueOf(start), f));
+            ps.setString(6, String.format(String.valueOf(end), f));
+            ps.setString(7, String.format(String.valueOf(LocalDateTime.now()), f));
+            ps.setString(8, String.valueOf(Logon.getLoggedOnUser()));
+            ps.setInt(9, a.getCustomerID());
+            ps.setInt(10, a.getUserID());
+            ps.setInt(11, contactsAccess.getContactID(a.contact));
+            ps.setInt(12, a.getAppointmentID());
+
+            ps.executeUpdate();
+            ps.close();
+            System.out.println("Update worked!");
+
+            return true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Try again nerd.");
+            return false;
+        }
+    }
 
     public static ObservableList<Integer> getUserIDs() throws SQLException {
         ObservableList<Integer> i = FXCollections.observableArrayList();

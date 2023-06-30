@@ -1,39 +1,33 @@
 package com.example.c195pa.model;
 
 import com.example.c195pa.helper.JDBC;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class Logon {
 
     private static Users loggedOnUser;
     private static Locale userLocale;
     private static ZoneId userZoneID;
-    private int userID;
-    private String username;
-    private String password;
+    private static int userID;
+    private static String username;
+    private static String password;
 
     public Logon(int userID, String username,  String password) {
-        this.userID = userID;
-        this.username = username;
-        this.password = password;
     }
 
     public static boolean loginAttempt(String username, String password) throws SQLException {
 
         PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT User_ID, User_name, Password  " +
-                "FROM users WHERE User_Name = ? AND Password = ?");
+                "FROM users WHERE User_Name = ? AND Password = ?;");
         ps.setString(1, username);
         ps.setString(2, password);
         ResultSet rs = ps.executeQuery();
+        System.out.println(ps);
 
         if(!rs.next()) {
             ps.close();
