@@ -18,7 +18,6 @@ public class Appointments {
     private LocalTime end;
     private LocalDate localDate;
     public String contact;
-
     public int customerID;
     public int userID;
     public int contactID;

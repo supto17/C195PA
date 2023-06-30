@@ -4,7 +4,7 @@ import com.example.c195pa.dao.appointmentAccess;
 import com.example.c195pa.main;
 import com.example.c195pa.helper.JDBC;
 import com.example.c195pa.model.Appointments;
-import com.example.c195pa.model.Users;
+import com.example.c195pa.model.Logon;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -64,7 +64,7 @@ public class LoginController implements Initializable {
         String username = loginUsername.getText();
         String password = loginPassword.getText();
 
-        boolean logon = Users.loginAttempt(username, password);
+        boolean logon = Logon.loginAttempt(username, password);
         System.out.println(logon);
 
         if (logon) {

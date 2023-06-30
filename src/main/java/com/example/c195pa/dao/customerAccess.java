@@ -1,10 +1,11 @@
 package com.example.c195pa.dao;
 
 import com.example.c195pa.helper.JDBC;
-import com.example.c195pa.model.Users;
+import com.example.c195pa.model.Logon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.example.c195pa.model.Customers;
+import javafx.scene.control.Alert;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -52,9 +53,6 @@ public class customerAccess {
                                          String division) throws SQLException {
 
         DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        Users test = Users.getLoggedOnUser();
-        String u = test.getUsername();
-        System.out.println(u);
 
         PreparedStatement ps = JDBC.getConnection().prepareStatement("UPDATE customers " +
                 " SET Customer_Name=?, Address=?, Postal_Code=?, Phone=?, Last_Update=?," +
@@ -65,7 +63,7 @@ public class customerAccess {
         ps.setString(3, postalCode);
         ps.setString(4, phoneNumber);
         ps.setString(5, ZonedDateTime.now(ZoneOffset.UTC).format(f));
-        ps.setString(6, u);
+        ps.setString(6, Logon.getLoggedOnUser().getUsername());
         ps.setInt(7, customerAccess.getUserDivisionID(division));
         ps.setInt(8, customerID);
 
@@ -86,9 +84,6 @@ public class customerAccess {
                                       String division) throws SQLException {
 
         DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
-        Users test = Users.getLoggedOnUser();
-        String u = test.getUsername();
-        System.out.println(u);
 
         PreparedStatement ps = JDBC.getConnection().prepareStatement("INSERT INTO customers "
                 + "(Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update," +
@@ -100,9 +95,9 @@ public class customerAccess {
         ps.setString(3, postalCode);
         ps.setString(4, phoneNumber);
         ps.setString(5, ZonedDateTime.now(ZoneOffset.UTC).format(f));
-        ps.setString(6, u);
+        ps.setString(6, Logon.getLoggedOnUser().getUsername());
         ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(f));
-        ps.setString(8, u);
+        ps.setString(8, Logon.getLoggedOnUser().getUsername());
         ps.setInt(9, customerAccess.getUserDivisionID(division));
 
         try {
