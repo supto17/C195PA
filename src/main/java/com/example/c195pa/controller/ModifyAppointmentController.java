@@ -121,10 +121,10 @@ public class ModifyAppointmentController implements Initializable {
             LocalTime endTime = LocalTime.parse(apptEndTimeBox.getSelectionModel().getSelectedItem());
             int customerID = apptCustomerID.getSelectionModel().getSelectedItem();
             int userID = apptUserID.getSelectionModel().getSelectedItem();
-            LocalDateTime l = LocalDateTime.now();
+            LocalDateTime dateTime = LocalDateTime.of(startDate,startTime);
 
             Appointments a = new Appointments(id, title, description,location,type,startTime,endTime,
-                              startDate,customerID,userID,contactsAccess.getContactID(contact),contact,l);
+                              startDate,customerID,userID,contactsAccess.getContactID(contact),contact , dateTime);
 
             boolean success = appointmentAccess.updateAppointment(a);
             if (success) {

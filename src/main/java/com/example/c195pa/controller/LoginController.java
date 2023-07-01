@@ -20,6 +20,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -164,5 +166,8 @@ public class LoginController implements Initializable {
                 else {
                     englishButton.setSelected(true);
                 }
+
+        ZonedDateTime z = ZonedDateTime.now(ZoneId.systemDefault());
+        ZonedDateTime z2 = z.withZoneSameInstant(ZoneOffset.UTC);
     }
 }

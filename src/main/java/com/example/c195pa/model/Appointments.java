@@ -39,9 +39,21 @@ public class Appointments {
         this.contact = contact;
         this.dateTime = dateTime;
     }
-    public Appointments(String title, String description, String location, String type, LocalTime startTime,
-                        LocalTime endTime, LocalDate startDate, int customerID, int userID, int contactID,
-                        String contact, LocalDateTime l) {
+    public Appointments(String title, String description, String location, String appointmentType,
+                        LocalTime start, LocalTime end, LocalDate localDate, int customerID, int userID, int contactID,
+                        String contact, LocalDateTime dateTime) {
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.appointmentType = appointmentType;
+        this.start = start;
+        this.end = end;
+        this.localDate = localDate;
+        this.customerID = customerID;
+        this.userID = userID;
+        this.contactID = contactID;
+        this.contact = contact;
+        this.dateTime = dateTime;
     }
 
     public Appointments(String month, String type, int count) {

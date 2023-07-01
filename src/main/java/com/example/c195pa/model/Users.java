@@ -62,8 +62,8 @@ public class Users {
     public static void auditLogin(String userName, Boolean b) throws IOException {
         try {
             FileWriter logger = new FileWriter(logPath);
-            String s = ZonedDateTime.now(ZoneOffset.UTC) + " UTC-LOGIN ATTEMPT-USERNAME: " + userName + " LOGIN SUCCESSFUL: " + (b.toString());
-            logger.append(s);
+            String s = ZonedDateTime.now(ZoneOffset.UTC) + " UTC-LOGIN ATTEMPT-USERNAME: " + userName + " LOGIN SUCCESSFUL: " + (b.toString() + "\n");
+            logger.write(s);
             logger.flush();
             logger.close();
             System.out.println("Wrote to file!");
