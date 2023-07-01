@@ -2,10 +2,13 @@ package com.example.c195pa.model;
 
 import com.example.c195pa.helper.JDBC;
 
+import java.io.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Locale;
 
 public class Users {
@@ -15,6 +18,7 @@ public class Users {
     private static Users loggedOnUser;
     private static Locale userLocale;
     private static ZoneId userZoneID;
+    private static final String logPath = "login_audit.txt";
 
     public Users(int userID, String username, String password) {
         this.userID = userID;
@@ -24,7 +28,7 @@ public class Users {
 
 
 
-    public static boolean loginAttempt(String username, String password) throws  SQLException {
+    public static boolean loginAttempt(String username, String password) throws SQLException, IOException {
 
         PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT User_ID, User_name, Password  " +
                 "FROM users WHERE User_Name = ? AND Password = ?;");
@@ -40,15 +44,33 @@ public class Users {
             username = rs.getString("User_Name");
             password = rs.getString("Password");
             loggedOnUser = new Users(userID, username, password);
+            System.out.println(username);
+            auditLogin(username, true);
             found = true;
         }
         if (!found) {
             ps.close();
+            System.out.println(username);
+            auditLogin(username, false);
             found = false;
         }
         userLocale = Locale.getDefault();
         userZoneID = ZoneId.systemDefault();
         return found;
+    }
+
+    public static void auditLogin(String userName, Boolean b) throws IOException {
+        try {
+            FileWriter logger = new FileWriter(logPath);
+            String s = ZonedDateTime.now(ZoneOffset.UTC) + " UTC-LOGIN ATTEMPT-USERNAME: " + userName + " LOGIN SUCCESSFUL: " + (b.toString());
+            logger.append(s);
+            logger.flush();
+            logger.close();
+            System.out.println("Wrote to file!");
+        }
+        catch (IOException error) {
+            error.printStackTrace();
+        }
     }
 
     /**

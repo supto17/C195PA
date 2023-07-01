@@ -62,8 +62,13 @@ public class appointmentAccess {
         return appointmentsObservableList;
     }
 
-    public static boolean addAppointment(String title, String description, String location,
-                                         String type, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, Integer customerID, Integer userID, Integer contactID) throws SQLException {
+    public static boolean addAppointment(Appointments a) throws SQLException {
+
+        LocalDate startDate = a.getLocalDate();
+        LocalDate endDate = a.getLocalDate();
+        LocalTime startTime = a.getStart();
+        LocalTime endTime = a.getEnd();
+
 
         DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         LocalDateTime start = LocalDateTime.of(startDate, startTime);
@@ -72,6 +77,7 @@ public class appointmentAccess {
         String u = test.getUsername();
         System.out.println(u);
 
+        boolean success = validateAppointments(a);
 
         String sql = "INSERT INTO appointments "
                 + "(Title, Description, Location, Type, Start, End, Create_Date," +
@@ -79,33 +85,35 @@ public class appointmentAccess {
                 "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?);";
         PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
-        ps.setString(1, title);
-        ps.setString(2, description);
-        ps.setString(3, location);
-        ps.setString(4, type);
-        ps.setString(5, String.valueOf(start));
-        ps.setString(6, String.valueOf(end));
-        ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(f));
+        ps.setString(1, a.getTitle());
+        ps.setString(2, a.getDescription());
+        ps.setString(3, a.getLocation());
+        ps.setString(4, a.getAppointmentType());
+        ps.setString(5, String.format(String.valueOf(start), f));
+        ps.setString(6, String.format(String.valueOf(end), f));
+        ps.setString(7, String.format(String.valueOf(LocalDateTime.now()), f));
         ps.setString(8, u);
-        ps.setString(9, ZonedDateTime.now(ZoneOffset.UTC).format(f));
+        ps.setString(9, String.format(String.valueOf(LocalDateTime.now()), f));
         ps.setString(10, u);
-        ps.setInt(11, customerID);
-        ps.setInt(12, userID);
-        ps.setInt(13, contactID);
+        ps.setInt(9, a.getCustomerID());
+        ps.setInt(10, a.getUserID());
+        ps.setInt(11, contactsAccess.getContactID(a.contact));
         System.out.println(ps);
-        try {
-            ps.executeUpdate();
-            ps.close();
-            return true;
+        if (success) {
+            try {
+                ps.executeUpdate();
+                ps.close();
+                return true;
+            } catch (SQLException err) {
+                err.printStackTrace();
+                return false;
+            }
         }
-        catch (SQLException err) {
-            err.printStackTrace();
-            return false;
-        }
+        return true;
     }
 
     //TODO update appointment logic
-    public static boolean updateAppointment(Appointments a) throws SQLException{
+    public static boolean updateAppointment(Appointments a) throws SQLException {
 
         LocalDate startDate = a.getLocalDate();
         LocalDate endDate = a.getLocalDate();
@@ -116,49 +124,47 @@ public class appointmentAccess {
         LocalDateTime start = LocalDateTime.of(startDate, startTime);
         LocalDateTime end = LocalDateTime.of(endDate, endTime);
 
-        if(startDate.isAfter(endDate) || startDate != endDate) {
-            appointmentAccess.createWarningAlert("Invalid Dates", "Due to business constraints, appointment start date and end date must be on the same day");
-            return false;
-        }
-
-
         System.out.println(start);
         System.out.println(end);
         Users test = Users.getLoggedOnUser();
         String u = test.getUsername();
         System.out.println(u);
 
-        String sql = "UPDATE appointments SET Title=?, Description=?, Location=?, Type=?, Start=?, End=?, " +
-                " Last_Update=?, Last_Updated_By=?, Customer_ID=?," +
-                " User_ID=?, Contact_ID=? WHERE Appointment_ID=?";
-        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+        boolean success = validateAppointments(a);
 
+        if (success) {
 
-        try {
-            ps.setString(1, a.getTitle());
-            ps.setString(2, a.getDescription());
-            ps.setString(3, a.getLocation());
-            ps.setString(4, a.getAppointmentType());
-            ps.setString(5, String.format(String.valueOf(start), f));
-            ps.setString(6, String.format(String.valueOf(end), f));
-            ps.setString(7, String.format(String.valueOf(LocalDateTime.now()), f));
-            ps.setString(8, u);
-            ps.setInt(9, a.getCustomerID());
-            ps.setInt(10, a.getUserID());
-            ps.setInt(11, contactsAccess.getContactID(a.contact));
-            ps.setInt(12, a.getAppointmentID());
+            String sql = "UPDATE appointments SET Title=?, Description=?, Location=?, Type=?, Start=?, End=?, " +
+                    " Last_Update=?, Last_Updated_By=?, Customer_ID=?," +
+                    " User_ID=?, Contact_ID=? WHERE Appointment_ID=?";
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
-            ps.executeUpdate();
-            ps.close();
-            System.out.println("Update worked!");
+            try {
+                ps.setString(1, a.getTitle());
+                ps.setString(2, a.getDescription());
+                ps.setString(3, a.getLocation());
+                ps.setString(4, a.getAppointmentType());
+                ps.setString(5, String.format(String.valueOf(start), f));
+                ps.setString(6, String.format(String.valueOf(end), f));
+                ps.setString(7, String.format(String.valueOf(LocalDateTime.now()), f));
+                ps.setString(8, u);
+                ps.setInt(9, a.getCustomerID());
+                ps.setInt(10, a.getUserID());
+                ps.setInt(11, contactsAccess.getContactID(a.contact));
+                ps.setInt(12, a.getAppointmentID());
 
-            return true;
+                ps.executeUpdate();
+                ps.close();
+                System.out.println("Update worked!");
+
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Try again nerd.");
+                return false;
+            }
         }
-        catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Try again nerd.");
-            return false;
-        }
+        return true;
     }
 
     public static ObservableList<Integer> getUserIDs() throws SQLException {
@@ -308,5 +314,36 @@ public class appointmentAccess {
             e.printStackTrace();
         }
         return viewByMonth;
+    }
+
+    public static boolean validateAppointments(Appointments a) throws SQLException {
+        ObservableList<Appointments> allAppointments = appointmentAccess.getAllAppointments();
+        LocalDate startDate = a.getLocalDate();
+        LocalDate endDate = a.getLocalDate();
+        LocalTime startTime = a.getStart();
+        LocalTime endTime = a.getEnd();
+        LocalDateTime dateTimeStart = LocalDateTime.of(startDate, startTime);
+        LocalDateTime dateTimeEnd = LocalDateTime.of(endDate,endTime);
+        ZonedDateTime zoneDateStart = ZonedDateTime.of(dateTimeStart, ZoneId.systemDefault());
+        ZonedDateTime zoneDateEnd = ZonedDateTime.of(dateTimeEnd, ZoneId.systemDefault());
+        ZonedDateTime convertStartEST = zoneDateStart.withZoneSameInstant(ZoneId.of("America/New_York"));
+        ZonedDateTime convertEndEST = zoneDateEnd.withZoneSameInstant(ZoneId.of("America/New_York"));
+
+        for (Appointments appointments : allAppointments) {
+            if (appointments.getStart() == a.getStart() || appointments.getEnd() == a.getEnd()) {
+                if (a.getStart().isAfter(appointments.getStart()) && a.getStart().isBefore(appointments.getEnd())) ;
+                if (a.getEnd().isAfter(appointments.getStart()) && a.getEnd().isBefore(appointments.getEnd())) {
+                    createWarningAlert("Appointment Overlap", "Appointment " + a.getAppointmentID() +
+                            " overlaps with existing appointment " + appointments.getAppointmentID());
+                    return false;
+                }
+            }
+        }
+
+        if (startDate.isAfter(endDate) || startDate != endDate) {
+                createWarningAlert("Invalid Dates", "Due to business constraints, appointment start date and end date must be on the same day");
+            return false;
+        }
+        return true;
     }
 }

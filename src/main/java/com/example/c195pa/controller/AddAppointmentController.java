@@ -5,6 +5,7 @@ import com.example.c195pa.dao.contactsAccess;
 import com.example.c195pa.dao.customerAccess;
 import com.example.c195pa.dao.usersAccess;
 import com.example.c195pa.main;
+import com.example.c195pa.model.Appointments;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,10 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -90,14 +88,18 @@ public class AddAppointmentController implements Initializable {
             String type = appointmentTypeField.getText();
             LocalDate startDate = apptStartDatePicker.getValue();
             LocalDate endDate = apptEndDatePicker.getValue();
-            LocalTime startTime = LocalTime.parse(apptStartTimeBox.getValue());
-            LocalTime endTime = LocalTime.parse(apptEndTimeBox.getValue());
-            Integer customerID = apptCustomerID.getSelectionModel().getSelectedItem();
-            Integer userID = apptUserID.getSelectionModel().getSelectedItem();
+            LocalTime startTime = LocalTime.parse(apptStartTimeBox.getSelectionModel().getSelectedItem());
+            LocalTime endTime = LocalTime.parse(apptEndTimeBox.getSelectionModel().getSelectedItem());
+            int customerID = apptCustomerID.getSelectionModel().getSelectedItem();
+            int userID = apptUserID.getSelectionModel().getSelectedItem();
+            LocalDateTime l = LocalDateTime.now();
 
             int contactID = contactsAccess.getContactID(contact);
 
-            boolean success = appointmentAccess.addAppointment(title, description, location, type, startDate, endDate, startTime, endTime , customerID, userID, contactID);
+            Appointments a = new Appointments(title, description, location, type, startTime, endTime, startDate, customerID, userID,
+                        contactID, contact, l);
+
+            boolean success = appointmentAccess.addAppointment(a);
 
                 if (success) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -142,22 +144,6 @@ public class AddAppointmentController implements Initializable {
         catch (SQLException e) {
             e.printStackTrace();
         }
-
-        // disables the weekend boxes on datepickers
-        apptStartDatePicker.setDayCellFactory(dp -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                setDisable(empty || item.getDayOfWeek() == DayOfWeek.SATURDAY || item.getDayOfWeek() == DayOfWeek.SUNDAY);
-            }
-        });
-        apptEndDatePicker.setDayCellFactory(dp -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                setDisable(empty || item.getDayOfWeek() == DayOfWeek.SATURDAY || item.getDayOfWeek() == DayOfWeek.SUNDAY);
-            }
-        });
     }
 }
 

@@ -1,12 +1,10 @@
 package com.example.c195pa.dao;
 
 import com.example.c195pa.helper.JDBC;
-import com.example.c195pa.model.Logon;
 import com.example.c195pa.model.Users;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.example.c195pa.model.Customers;
-import javafx.scene.control.Alert;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

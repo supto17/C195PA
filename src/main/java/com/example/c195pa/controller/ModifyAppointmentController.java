@@ -123,9 +123,6 @@ public class ModifyAppointmentController implements Initializable {
             int userID = apptUserID.getSelectionModel().getSelectedItem();
             LocalDateTime l = LocalDateTime.now();
 
-            if(startDate.isAfter(endDate) || startDate != endDate) {
-                createWarningAlert("Invalid Dates", "Due to business constraints, appointment start date and end date must be on the same day");
-            }
             Appointments a = new Appointments(id, title, description,location,type,startTime,endTime,
                               startDate,customerID,userID,contactsAccess.getContactID(contact),contact,l);
 
@@ -155,20 +152,6 @@ public class ModifyAppointmentController implements Initializable {
         apptStartTimeBox.setItems(appointmentTimes);
         apptEndTimeBox.setItems(appointmentTimes);
 
-        apptStartDatePicker.setDayCellFactory(dp -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                setDisable(empty || item.getDayOfWeek() == DayOfWeek.SATURDAY || item.getDayOfWeek() == DayOfWeek.SUNDAY);
-            }
-        });
-        apptEndDatePicker.setDayCellFactory(dp -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate item, boolean empty) {
-                super.updateItem(item, empty);
-                setDisable(empty || item.getDayOfWeek() == DayOfWeek.SATURDAY || item.getDayOfWeek() == DayOfWeek.SUNDAY);
-            }
-        });
     }
 }
 

@@ -39,12 +39,18 @@ public class Appointments {
         this.contact = contact;
         this.dateTime = dateTime;
     }
+    public Appointments(String title, String description, String location, String type, LocalTime startTime,
+                        LocalTime endTime, LocalDate startDate, int customerID, int userID, int contactID,
+                        String contact, LocalDateTime l) {
+    }
 
     public Appointments(String month, String type, int count) {
         this.month = month;
         this.type = type;
         this.count = count;
     }
+
+
 
     /**
      * @return appointmentID

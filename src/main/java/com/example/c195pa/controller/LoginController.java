@@ -4,7 +4,6 @@ import com.example.c195pa.dao.appointmentAccess;
 import com.example.c195pa.main;
 import com.example.c195pa.helper.JDBC;
 import com.example.c195pa.model.Appointments;
-import com.example.c195pa.model.Logon;
 import com.example.c195pa.model.Users;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
