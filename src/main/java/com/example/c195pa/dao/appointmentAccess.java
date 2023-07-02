@@ -100,37 +100,41 @@ public class appointmentAccess {
 
         boolean success = validateAppointments(a);
 
-        String sql = "INSERT INTO appointments "
-                + "(Title, Description, Location, Type, Start, End, Create_Date," +
-                " Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID)" +
-                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-
-        ps.setString(1, a.getTitle());
-        ps.setString(2, a.getDescription());
-        ps.setString(3, a.getLocation());
-        ps.setString(4, a.getAppointmentType());
-        ps.setTimestamp(5, startTS);
-        ps.setTimestamp(6, endTS);
-        ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(f));
-        ps.setString(8, u);
-        ps.setString(9, ZonedDateTime.now(ZoneOffset.UTC).format(f));
-        ps.setString(10, u);
-        ps.setInt(11, a.getCustomerID());
-        ps.setInt(12, a.getUserID());
-        ps.setInt(13, contactsAccess.getContactID(a.contact));
-        System.out.println(ps);
         if (success) {
             try {
+
+                String sql = "INSERT INTO appointments "
+                        + "(Title, Description, Location, Type, Start, End, Create_Date," +
+                        " Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID)" +
+                        "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+
+                ps.setString(1, a.getTitle());
+                ps.setString(2, a.getDescription());
+                ps.setString(3, a.getLocation());
+                ps.setString(4, a.getAppointmentType());
+                ps.setTimestamp(5, startTS);
+                ps.setTimestamp(6, endTS);
+                ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(f));
+                ps.setString(8, u);
+                ps.setString(9, ZonedDateTime.now(ZoneOffset.UTC).format(f));
+                ps.setString(10, u);
+                ps.setInt(11, a.getCustomerID());
+                ps.setInt(12, a.getUserID());
+                ps.setInt(13, contactsAccess.getContactID(a.contact));
+
                 ps.executeUpdate();
                 ps.close();
                 return true;
-            } catch (SQLException err) {
+            }
+                catch (SQLException err) {
                 err.printStackTrace();
                 return false;
             }
         }
-        return true;
+        else {
+            return false;
+        }
     }
 
     /**

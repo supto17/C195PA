@@ -152,7 +152,6 @@ public class ModifyAppointmentController implements Initializable {
                 alert.setHeaderText("Failed to add " + appointmentTitleField.getText() + ".");
                 alert.showAndWait();
             }
-
         }
         catch (Exception e) {
             e.printStackTrace();

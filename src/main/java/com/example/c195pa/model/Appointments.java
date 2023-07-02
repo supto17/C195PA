@@ -105,8 +105,6 @@ public class Appointments {
         this.count = count;
     }
 
-
-
     /**
      * @return appointmentID
      */
@@ -198,4 +196,19 @@ public class Appointments {
      * @return dateTime
      */
     public LocalDateTime getDateTime() { return dateTime; }
+
+    /**
+     * @return count
+     */
+    public int getCount() {return count;}
+
+    /**
+     * @return type
+     */
+    public String getType() {return type;}
+
+    /**
+     * @return month
+     */
+    public String getMonth() {return month;}
 }
