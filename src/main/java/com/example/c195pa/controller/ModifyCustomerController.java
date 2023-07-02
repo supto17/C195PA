@@ -40,6 +40,12 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     public Button cancelButton;
 
+
+    /**
+     * Simple function to return the user to the main menu
+     * @param event user attempts to go to main menu
+     * @throws IOException if main menu is not found
+     */
     public void toMainMenu (ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("MainMenu.fxml")));
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -49,6 +55,13 @@ public class ModifyCustomerController implements Initializable {
         stage.show();
     }
 
+
+    /**
+     * send the selected customer from the main screen and populates modify appointment
+     * with the data.
+     * @param selectedCustomer appointment selected in the main menu appointment table view
+     * @throws SQLException if any query called returns an error
+     */
     public void sendCustomer(Customers selectedCustomer) throws SQLException {
         customerCountryBox.setItems(customerAccess.getAllCountries());
         customerCountryBox.getSelectionModel().select(selectedCustomer.getCountry());
@@ -62,6 +75,12 @@ public class ModifyCustomerController implements Initializable {
 
     }
 
+    /**
+     * Gets the text from the text fields, and send the information to the updateCustomer function.
+     * If that function returns true, the customer is updated and the user is returned to the main screen.
+     * @param actionEvent save button clicked
+     * @throws SQLException if the customer is not able to be added to the database
+     */
     public void onActionSaveButton(ActionEvent actionEvent) throws SQLException, IOException {
 
         // check for null fields
@@ -99,14 +118,26 @@ public class ModifyCustomerController implements Initializable {
         }
     }
 
+    /**
+     * Returns the user to the main screen
+     * @param actionEvent cancel button clicked
+     * @throws IOException if main menu screen is not found
+     */
     public void onActionCancelButton(ActionEvent actionEvent) throws IOException {
         toMainMenu(actionEvent);
     }
 
+    /**
+     *  Initializes the modify customer screen
+     * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle resourceBundle The resources used to localize the root object, or null if the root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        // lambda function to listen for country combo box selection
+        /**
+         *  LAMBDA function to listen for country combo box selection
+         */
         customerCountryBox.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal == null) {
                 divisionBox.getItems().clear();
@@ -122,6 +153,4 @@ public class ModifyCustomerController implements Initializable {
             }
         });
     }
-
-
 }

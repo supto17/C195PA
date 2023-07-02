@@ -11,32 +11,11 @@ import java.sql.SQLException;
 
 public class fldAccess {
 
-    public ObservableList<FirstLevelDivisions> fldObservableList = FXCollections.observableArrayList();
-
-    public fldAccess() throws SQLException {
-    }
-
-    public ObservableList<FirstLevelDivisions> getAllFLD() throws SQLException {
-
-        try {
-            String sql = "SELECT * FROM first_level_divisions";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                int divisionID = rs.getInt("Division_ID");
-                String divisionName = rs.getString("Division");
-                int countryID = rs.getInt("Country_ID");
-                FirstLevelDivisions fld = new FirstLevelDivisions(divisionID, divisionName, countryID);
-                fldObservableList.add(fld);
-            }
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return fldObservableList;
-    }
-
+    /**
+     * Function that queries the database for my custom report on the reports page
+     * @return observable list of customers by division
+     * @throws SQLException if an error occurs during the query
+     */
     public static ObservableList<FirstLevelDivisions> getCustomersByDivision() throws SQLException {
 
         ObservableList<FirstLevelDivisions> customersByDivision = FXCollections.observableArrayList();

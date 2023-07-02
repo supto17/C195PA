@@ -1,6 +1,7 @@
 package com.example.c195pa.controller;
 
 import com.example.c195pa.dao.appointmentAccess;
+import com.example.c195pa.dao.contactsAccess;
 import com.example.c195pa.main;
 import com.example.c195pa.helper.JDBC;
 import com.example.c195pa.model.Appointments;
@@ -48,6 +49,10 @@ public class LoginController implements Initializable {
     @FXML
     public Label zoneLabelText;
 
+    /**
+     * Simple function to get userLocale based on their radio button selection
+     * @return userLocale
+     */
     public Locale getLocale() {
         Locale userLocale = null;
         if (frenchButton.isSelected()) {
@@ -59,6 +64,14 @@ public class LoginController implements Initializable {
         return userLocale;
     }
 
+    /**
+     * When the user clicks the login button, the login and username text boxes are parsed and sent in a query to the database.
+     * If the username and password do not match an entry in the database, a null query is returned and the user is not able to logon.
+     * Otherwise, the user is logged in. In either case, the login attempt is written to login_audit.txt
+     * @param actionEvent login button clicked
+     * @throws IOException if main menu is not found
+     * @throws SQLException if username and password are not founf
+     */
     public void onActionLoginButton(ActionEvent actionEvent) throws IOException, SQLException {
 
         ResourceBundle rb = ResourceBundle.getBundle("language", getLocale());
@@ -94,7 +107,7 @@ public class LoginController implements Initializable {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Appointment Alert");
                     alert.setHeaderText("Upcoming Appointment");
-                    alert.setContentText("Appointment with " + a.getCustomerID() + " at " + a.getStart());
+                    alert.setContentText("Appointment with " + contactsAccess.getContactName(a.getContactID()) + " at " + a.getStart());
                     alert.showAndWait();
 
                     }
@@ -115,11 +128,19 @@ public class LoginController implements Initializable {
             }
         }
 
+    /**
+     * If the user clicks cancel, the database connection is closed and the program exits
+     * @param actionEvent cancel button clicked
+     */
     public void onActionCancelButton(ActionEvent actionEvent) {
         JDBC.closeConnection();
         System.exit(0);
     }
 
+    /**
+     * All text on the login screen is changed to french, to include alerts
+     * @param actionEvent french radio button pressed
+     */
     public void onActionFrenchButtonPressed(ActionEvent actionEvent) {
         ResourceBundle rb = ResourceBundle.getBundle("language", Locale.FRENCH);
         loginButton.setText(rb.getString("LOGIN"));
@@ -132,6 +153,10 @@ public class LoginController implements Initializable {
         cancelButton.setText(rb.getString("CANCEL"));
     }
 
+    /**
+     * All text on the login screen is changed to english, to include alerts
+     * @param actionEvent english radio button pressed
+     */
     public void onActionEnglishButtonPressed(ActionEvent actionEvent) {
         ResourceBundle rb = ResourceBundle.getBundle("language", Locale.ENGLISH);
         loginButton.setText(rb.getString("LOGIN"));
@@ -144,6 +169,12 @@ public class LoginController implements Initializable {
         cancelButton.setText(rb.getString("CANCEL"));
     }
 
+    /**
+     * On initialize, userLocale is retrieved and the language is populated according to which locale
+     * the user has set/ is in.
+     * @param location location The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resources resourceBundle The resources used to localize the root object, or null if the root object was not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Locale userLocale = Locale.getDefault();

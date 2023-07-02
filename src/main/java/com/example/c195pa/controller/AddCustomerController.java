@@ -49,6 +49,11 @@ public class AddCustomerController implements Initializable {
     @FXML
     private Button saveButton;
 
+    /**
+     * Simple function to return the user to the main menu
+     * @param event user attempts to go to main menu
+     * @throws IOException if main menu is not found
+     */
     public void toMainMenu (ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("MainMenu.fxml")));
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -58,11 +63,24 @@ public class AddCustomerController implements Initializable {
         stage.show();
     }
 
+    /**
+     * When user clicks the cancel button, the toMainMenu function is called and the user is returned to the Main Menu
+     * @param event cancel button clicked
+     * @throws IOException if unable to find Main Menu
+     */
     @FXML
     void cancelButtonClicked(ActionEvent event) throws IOException {
         toMainMenu(event);
     }
 
+    /**
+     * When the user clicks the save button, the entered date is parsed and an if statement is created to ensure none of
+     * the fields are blank. Due to how I built the boxes, this is the only error checking necessary to ensure data entered
+     * is okay
+     * @param actionEvent actionEvent
+     * @throws SQLException if add customer does not work
+     * @throws IOException if main menu is not found
+     */
     @FXML
     public void saveButtonClick(ActionEvent actionEvent) throws SQLException, IOException {
 
@@ -101,6 +119,12 @@ public class AddCustomerController implements Initializable {
     }
 
 
+    /**
+     * Initialize populates the customer country box and includes a LAMBDA function that listens
+     * for changes in the customerCountryBox
+     * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle resourceBundle The resources used to localize the root object, or null if the root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -110,6 +134,10 @@ public class AddCustomerController implements Initializable {
         catch (SQLException e) {
             e.printStackTrace();
         }
+        /**
+         * LAMBDA function that listens for entry on the customerCountryBox and populates the division box based
+         * on their selection
+         */
         customerCountryBox.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal == null) {
                 divisionBox.getItems().clear();

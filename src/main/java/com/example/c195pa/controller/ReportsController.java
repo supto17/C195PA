@@ -92,6 +92,12 @@ public class ReportsController  implements Initializable {
     @FXML
     private TableColumn<?, ?> totalCustomers;
 
+    /**
+     * @param event user attempts to switch screens
+     * @param path path to the screen
+     * @param title title of the screen
+     * @throws IOException if the screen user is attempting to go to is not found
+     */
     public void switchScreen (ActionEvent event, String path, String title) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource(path)));
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -101,21 +107,31 @@ public class ReportsController  implements Initializable {
         stage.show();
     }
 
+    /**
+     * Returns user to the main screen
+     * @param event back button clicked
+     * @throws IOException if main menu screen is not found
+     */
     @FXML
     void backButtonClicked(ActionEvent event) throws IOException {
         switchScreen(event, "MainMenu.fxml", "Main Menu");
     }
 
-    @FXML
-    void customerComboBoxSelection(ActionEvent event) {
-
-    }
-
+    /**
+     * returns user to the login screen
+     * @param event logout button clicked
+     * @throws IOException if login screen is not found
+     */
     @FXML
     void logoutButtonClicked(ActionEvent event) throws IOException {
         switchScreen(event, "login.fxml", "Login");
     }
 
+    /**
+     * Initializes the reports page
+     * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle resourceBundle The resources used to localize the root object, or null if the root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

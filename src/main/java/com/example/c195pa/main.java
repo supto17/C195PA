@@ -18,6 +18,11 @@ import java.time.ZonedDateTime;
 import java.util.Locale;
 
 public class main extends Application {
+    /**
+     * Loads the login screen
+     * @param stage login screen
+     * @throws IOException if login screen is not found
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("login.fxml"));
@@ -27,14 +32,15 @@ public class main extends Application {
         stage.show();
     }
 
+    /**
+     * Starts the program
+     * @param args args
+     */
     public static void main(String[] args) {
 
-        //Locale.setDefault(new Locale("fr"));
         JDBC.openConnection();
         launch(args);
         JDBC.closeConnection();
 
-        //TODO document lambdas
-        //TODO Javadocs
     }
 }

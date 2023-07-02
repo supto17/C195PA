@@ -20,14 +20,26 @@ public class Users {
     private static ZoneId userZoneID;
     private static final String logPath = "login_audit.txt";
 
+    /**
+     * Creates a Users object
+     * @param userID id of the user
+     * @param username username of the user
+     * @param password password of the user
+     */
     public Users(int userID, String username, String password) {
         this.userID = userID;
         this.username = username;
         this.password = password;
     }
 
-
-
+    /**
+     *
+     * @param username username of the user attempting to login
+     * @param password password of the user attempting to login
+     * @return boolean whether or not they successfully logged in
+     * @throws SQLException if an error occurs during the query
+     * @throws IOException if unable to write to the text file
+     */
     public static boolean loginAttempt(String username, String password) throws SQLException, IOException {
 
         PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT User_ID, User_name, Password  " +
@@ -56,6 +68,12 @@ public class Users {
         return found;
     }
 
+    /**
+     *
+     * @param userName username of the user attempting to login
+     * @param b boolean that represents whether their login worked
+     * @throws IOException if unable to write to file
+     */
     public static void auditLogin(String userName, Boolean b) throws IOException {
         String s = ZoneId.systemDefault() + " LOGIN ATTEMPT-USERNAME: " + userName + " LOGIN SUCCESSFUL: " + (b.toString() + "\n");
         try {
@@ -92,14 +110,23 @@ public class Users {
         return username;
     }
 
+    /**
+     * @return loggedOnUser
+     */
     public static Users getLoggedOnUser() {
         return loggedOnUser;
     }
 
+    /**
+     * @return userLocale
+     */
     public static Locale getUserLocale() {
         return userLocale;
     }
 
+    /**
+     * @return userZoneID
+     */
     public static ZoneId getUserZoneID() {
         return userZoneID;
     }

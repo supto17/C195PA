@@ -30,7 +30,7 @@
             <TableColumn fx:id="apptUserID" prefWidth="55.0" style="-fx-alignment: CENTER;" text="User ID" />
         </columns>
       </TableView>
-      <ComboBox fx:id="customerComboBox" layoutX="596.0" layoutY="40.0" onAction="#customerComboBoxSelection" prefHeight="25.0" prefWidth="161.0" />
+      <ComboBox fx:id="customerComboBox" layoutX="596.0" layoutY="40.0" prefHeight="25.0" prefWidth="161.0" />
       <Label layoutX="482.0" layoutY="39.0" text="Contacts:">
          <font>
             <Font size="18.0" />

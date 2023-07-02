@@ -23,6 +23,23 @@ public class Appointments {
     public int userID;
     public int contactID;
 
+    /**
+     * Constructor to create an appointment with an existing appointmentID
+     * @param appointmentID id of the appointment
+     * @param title title of the appointment
+     * @param description description of the appointment
+     * @param location location of the appointment
+     * @param appointmentType type of the appointment
+     * @param start start time of the appointment
+     * @param end end time of the appointment
+     * @param startDate start date of the appointment
+     * @param endDate end date of the appointment
+     * @param customerID id for the customer of the appointment
+     * @param userID id for the user of the appointment
+     * @param contactID id for the contact of the appointment
+     * @param contact name for the contact of the appointment
+     * @param dateTime dateTime
+     */
     public Appointments(int appointmentID, String title, String description, String location, String appointmentType,
                         LocalTime start, LocalTime end, LocalDate startDate, LocalDate endDate, int customerID, int userID, int contactID,
                         String contact, LocalDateTime dateTime) {
@@ -41,6 +58,23 @@ public class Appointments {
         this.contact = contact;
         this.dateTime = dateTime;
     }
+
+    /**
+     * Constructor to create an appointment without an existing appointmentID
+     * @param title title of the appointment
+     * @param description description of the appointment
+     * @param location location of the appointment
+     * @param appointmentType type of the appointment
+     * @param start start time of the appointment
+     * @param end end time of the appointment
+     * @param startDate start date of the appointment
+     * @param endDate end date of the appointment
+     * @param customerID id for the customer of the appointment
+     * @param userID id for the user of the appointment
+     * @param contactID id for the contact of the appointment
+     * @param contact name for the contact of the appointment
+     * @param dateTime dateTime
+     */
     public Appointments(String title, String description, String location, String appointmentType,
                         LocalTime start, LocalTime end, LocalDate startDate, LocalDate endDate, int customerID, int userID, int contactID,
                         String contact, LocalDateTime dateTime) {
@@ -59,6 +93,12 @@ public class Appointments {
         this.dateTime = dateTime;
     }
 
+    /**
+     * Constructor for user in the reports page
+     * @param month month of the appointments
+     * @param type types of the appointments
+     * @param count number of the appointments
+     */
     public Appointments(String month, String type, int count) {
         this.month = month;
         this.type = type;
@@ -116,8 +156,14 @@ public class Appointments {
         return end;
     }
 
+    /**
+     * @return startDate
+     */
     public LocalDate getStartDate() {return startDate;}
 
+    /**
+     * @return endDate
+     */
     public LocalDate getEndDate() {return endDate;}
 
     /**
@@ -141,12 +187,15 @@ public class Appointments {
         return contactID;
     }
 
+    /**
+     *
+     * @return contact
+     */
     public String getContact() {return contact;}
 
+    /**
+     *
+     * @return dateTime
+     */
     public LocalDateTime getDateTime() { return dateTime; }
-    public String getMonth() {return month;}
-
-    public String getType() {return type;}
-
-    public int getCount() {return count;}
 }

@@ -63,6 +63,12 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private ComboBox<Integer> apptUserID;
 
+
+    /**
+     * Simple function to return the user to the main menu
+     * @param event user attempts to go to main menu
+     * @throws IOException if main menu is not found
+     */
     public void toMainMenu (ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("MainMenu.fxml")));
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -72,11 +78,22 @@ public class AddAppointmentController implements Initializable {
         stage.show();
     }
 
+    /**
+     * When user clicks the cancel button, the toMainMenu function is called and the user is returned to the Main Menu
+     * @param event cancel button clicked
+     * @throws IOException if main menu is not found
+     */
     @FXML
     void cancelButtonClicked(ActionEvent event) throws IOException {
         toMainMenu(event);
     }
 
+    /**
+     * When the user clicks the save button, all entered data is parsed and sent to the addAppointment function.
+     * Once there, the appointment is then sent to validateAppointment to ensure all information is entered correctly
+     * and that there is no overlap with other appointments. If the update works, the user is returned to the Main Menu.
+     * @param event save button clicked
+     */
     @FXML
     void saveButtonClicked(ActionEvent event) {
 
@@ -121,6 +138,13 @@ public class AddAppointmentController implements Initializable {
         }
     }
 
+    /**
+     * Initialize method populates the appointment start and end time boxes with only dates that could be within business hours.
+     * Also populates the contact box, customer ID box, and the user id box.
+     * I have also written a lambda function to ensure the user cannot schedule an appointment before today.
+     * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle resourceBundle The resources used to localize the root object, or null if the root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -129,7 +153,6 @@ public class AddAppointmentController implements Initializable {
         LocalTime firstAppointment = LocalTime.MIN.plusHours(8);
         LocalTime lastAppointment = LocalTime.MAX.minusHours(1).minusMinutes(45);
 
-        //if statement fixed issue with infinite loop
             while (firstAppointment.isBefore(lastAppointment)) {
                 appointmentTimes.add(String.valueOf(firstAppointment));
                 firstAppointment = firstAppointment.plusMinutes(15);
@@ -146,7 +169,8 @@ public class AddAppointmentController implements Initializable {
         }
 
         /**
-         * Lambda function that prevents user from selecting start day before today
+         * LAMBDA function that prevents user from selecting start day before today as the user should not be scheduling
+         * appointments before the current day
          */
         apptStartDatePicker.setDayCellFactory(apptStartDatePicker -> new DateCell() {
             public void updateItem(LocalDate apptStartDatePicker, boolean empty) {
@@ -157,7 +181,8 @@ public class AddAppointmentController implements Initializable {
         });
 
         /**
-         * Lambda function that prevents user from selecting end day before today
+         * LAMBDA function that prevents user from selecting start day before today as the user should not be scheduling
+         * appointments before the current day
          */
         apptEndDatePicker.setDayCellFactory(apptEndDatePicker -> new DateCell() {
         public void updateItem(LocalDate apptEndDatePicker, boolean empty) {

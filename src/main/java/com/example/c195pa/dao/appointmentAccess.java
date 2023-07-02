@@ -16,6 +16,11 @@ import java.time.format.DateTimeFormatter;
 
 public class appointmentAccess {
 
+    /**
+     * Simple method to create a warning alert
+     * @param  header text of the alert
+     * @param context context text of the alert
+     */
     public static Alert createWarningAlert(String header, String context) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setHeaderText(header);
@@ -24,6 +29,12 @@ public class appointmentAccess {
         return alert;
     }
 
+    /**
+     * getAllAppointments gets everything from the appointments table, as well as the contact name from the contacts table
+     * to create an appointment object. The object is then added to the appointmentsObservableList
+     * @return appointments observable list
+     * @throws SQLException if error occurs during the query
+     */
     public static ObservableList<Appointments> getAllAppointments() throws SQLException {
 
         ObservableList<Appointments> appointmentsObservableList = FXCollections.observableArrayList();
@@ -65,6 +76,12 @@ public class appointmentAccess {
         return appointmentsObservableList;
     }
 
+    /**
+     * Attempts to add the user created appointment to the database.
+     * @param a the appointment the user is attempting to add, passed the addAppointment controller.
+     * @return boolean based on if adding the appointment worked or not
+     * @throws SQLException if an error occurs during the query
+     */
     public static boolean addAppointment(Appointments a) throws SQLException {
 
         LocalDate startDate = a.getStartDate();
@@ -116,7 +133,12 @@ public class appointmentAccess {
         return true;
     }
 
-    //TODO update appointment logic
+    /**
+     * Attempts to update the appointment in the database.
+     * @param a the appointment the user is attempting to update, passed the modifyAppointment controller.
+     * @return boolean based on if updating the appointment worked or not
+     * @throws SQLException if an error occurs during the query
+     */
     public static boolean updateAppointment(Appointments a) throws SQLException {
 
         LocalDate startDate = a.getStartDate();
@@ -175,18 +197,12 @@ public class appointmentAccess {
         }
     }
 
-    public static ObservableList<Integer> getUserIDs() throws SQLException {
-        ObservableList<Integer> i = FXCollections.observableArrayList();
-
-        PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT Customer_ID FROM appointments");
-        ResultSet rs = ps.executeQuery();
-
-        while (rs.next()) {
-            i.add(rs.getInt("Customer_ID"));
-        }
-        return i;
-    }
-
+    /**
+     * Attempt to delete the appointment the user has selected in the appointment table view on the main screen.
+     * @param appointmentID passed to set the appointment ID in the query
+     * @return boolean whether or not deleting the appointment worked.
+     * @throws SQLException if an error occurs during the attempted deletion
+     */
     public static boolean deleteAppointment(int appointmentID) throws SQLException {
         String sql = "DELETE FROM appointments WHERE Appointment_ID=?;";
         PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -203,6 +219,13 @@ public class appointmentAccess {
         }
     }
 
+    /**
+     * Function called that returns an observable list based on what contact the user has selected on the reports page.
+     * @param contactName passed from the combo box on the report page where the user can select a contact to
+     * view just their appointments
+     * @return observable list to be displayed on the reports page
+     * @throws SQLException if an error occurs during the query
+     */
     public static ObservableList<Appointments> getAppointmentsByContact(String contactName) throws SQLException {
 
         ObservableList<Appointments> appointmentsByContact = FXCollections.observableArrayList();
@@ -239,6 +262,11 @@ public class appointmentAccess {
         return appointmentsByContact;
     }
 
+    /**
+     * Function called that returns an observable list based on the month and type of the appointment on the reports page.
+     * @return observable list to be displayed on the reports page
+     * @throws SQLException if an error occurs during the query
+     */
     public static ObservableList<Appointments> populateAppointmentsByMonth() throws SQLException {
 
         ObservableList<Appointments> s = FXCollections.observableArrayList();
@@ -257,6 +285,12 @@ public class appointmentAccess {
         return s;
     }
 
+    /**
+     * Function to query the database to return an observable list of appointment objects that are within the users
+     * current week.
+     * @return observable list of appointment objects that are within the users current week
+     * @throws SQLException if an error occurs during the query
+     */
     public static ObservableList<Appointments> viewByWeek() throws SQLException {
 
         ObservableList<Appointments> viewByWeek = FXCollections.observableArrayList();
@@ -294,6 +328,12 @@ public class appointmentAccess {
         return viewByWeek;
     }
 
+    /**
+     * Function to query the database to return an observable list of appointment objects that are within the users
+     * current month.
+     * @return observable list of appointment objects that are within the users current month
+     * @throws SQLException if an error occurs during the query
+     */
     public static ObservableList<Appointments> viewByMonth() throws SQLException {
 
         ObservableList<Appointments> viewByMonth = FXCollections.observableArrayList();
@@ -331,9 +371,18 @@ public class appointmentAccess {
         return viewByMonth;
     }
 
-    //TODO verify validation
+    /**
+     * validates an appointment the user is trying to add/update based on the criteria outlined in the requirements
+     * @param a apopintment to be validated
+     * @return boolean based on whether the appointment was validated
+     * @throws SQLException if an error occurs during the query
+     */
     public static boolean validateAppointments(Appointments a) throws SQLException {
         ObservableList<Appointments> allAppointments = appointmentAccess.getAllAppointments();
+
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("kk:mm");
+        LocalTime estTime = LocalTime.now(ZoneId.of("America/New_York"));
+        System.out.println(estTime);
 
         LocalDate startDate = a.getStartDate();
         LocalDate endDate = a.getEndDate();
@@ -345,10 +394,12 @@ public class appointmentAccess {
         ZonedDateTime startBusinessHours = ZonedDateTime.of(a.getStartDate(), LocalTime.of(8, 0), ZoneId.of("America/New_York"));
         ZonedDateTime endBusinessHours = ZonedDateTime.of(a.getEndDate(), LocalTime.of(22, 0), ZoneId.of("America/New_York"));
 
-        //TODO Check business hours
+        /**
+         * Checks hours input against EST business hours
+         */
         if (startZDT.isBefore(startBusinessHours) || startZDT.isAfter(endBusinessHours) || endZDT.isBefore(startBusinessHours) || endZDT.isAfter(endBusinessHours)) {
             createWarningAlert("Due to business constraints, start time and end time must be in business hours of 8:00am - 10:00pm",
-                    "Current EST: " + LocalTime.now(ZoneId.of("America/New_York")));
+                    "Current EST: " + estTime.format(f));
             return false;
         }
 
@@ -358,7 +409,7 @@ public class appointmentAccess {
         for (Appointments appointments : allAppointments) {
             if (a.getAppointmentID() != appointments.getAppointmentID()) {
                 if (a.getStartDate().compareTo(appointments.getStartDate()) == 0) {
-                    if (appointments.getStart() == a.getStart() || appointments.getEnd() == a.getEnd()) {
+                    if (appointments.getStart().compareTo(a.getStart()) == 0  || appointments.getEnd().compareTo(a.getEnd()) == 0) {
                         createWarningAlert("Appointment Overlap", "Appointment " + a.getAppointmentID() +
                                 " overlaps with existing appointment " + appointments.getAppointmentID());
                         System.out.println("appointment starts or ends equal");

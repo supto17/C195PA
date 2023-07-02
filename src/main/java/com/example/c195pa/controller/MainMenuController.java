@@ -97,7 +97,12 @@ public class MainMenuController implements Initializable {
     @FXML
     public RadioButton viewAll;
 
-
+    /**
+     * @param event user attempts to switch screens
+     * @param path path to the screen
+     * @param title title of the screen
+     * @throws IOException if the screen user is attempting to go to is not found
+     */
     public void switchScreen(ActionEvent event, String path, String title) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource(path)));
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -107,6 +112,12 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Simple method to create a warning alert
+     * @param title title of the alert
+     * @param  header text of the alert
+     * @param context context text of the alert
+     */
     public void createWarningAlert(String title, String header, String context) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
@@ -115,16 +126,29 @@ public class MainMenuController implements Initializable {
         alert.showAndWait();
     }
 
-
-
+    /**
+     * when the user clicks the report button, the function attempts to load the reports screen.
+     * @param actionEvent reports button clicked
+     * @throws IOException if reports screen is not found
+     */
     public void onReportsButtonClick(ActionEvent actionEvent) throws IOException {
         switchScreen(actionEvent, "Reports.fxml", "Reports");
     }
 
+    /**
+     * when the user clicks the add appointment button, the function attempts to load the Add Appointment screen.
+     * @param actionEvent add appointment button clicked
+     * @throws IOException if add appointment screen is not found
+     */
     public void onActionAddAppointment(ActionEvent actionEvent) throws IOException {
         switchScreen(actionEvent, "AddAppointment.fxml", "Add Appointment");
     }
 
+    /**
+     * when the user clicks the edit appointment button, the function attempts to load the modify appointment screen.
+     * @param actionEvent edit appointment button clicked
+     * @throws IOException if modify appointment screen is not found
+     */
     public void onActionUpdateAppointment(ActionEvent actionEvent) throws IOException, SQLException {
         Appointments selected = allAppointmentsTable.getSelectionModel().getSelectedItem();
         FXMLLoader loader = new FXMLLoader(main.class.getResource("ModifyAppointment.fxml"));
@@ -145,6 +169,12 @@ public class MainMenuController implements Initializable {
             stage.show();;
         }
     }
+
+    /**
+     * Verifies the user has selected an appointment from the tableView, and deletes the appointment
+     * @param actionEvent delete button clicked
+     * @throws SQLException if error occurs during the deletion.
+     */
     public void onActionDeleteAppointment(ActionEvent actionEvent) throws SQLException {
         Appointments selected = allAppointmentsTable.getSelectionModel().getSelectedItem();
 
@@ -180,6 +210,11 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * when the user clicks the add customer button, the function attempts to load the add customer screen.
+     * @param actionEvent add customer button clicked
+     * @throws IOException if add customer screen is not found
+     */
     public void onActionAddCustomer(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("AddCustomer.fxml")));
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
@@ -189,6 +224,11 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * when the user clicks the edit customer button, the function attempts to load the modify customer screen.
+     * @param actionEvent edit customer button clicked
+     * @throws IOException if modify customer screen is not found
+     */
     public void onActionModifyCustomer(ActionEvent actionEvent) throws IOException, SQLException {
 
         Customers selected = allCustomersTable.getSelectionModel().getSelectedItem();
@@ -210,6 +250,11 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * Verifies the user has selected a customer from the tableView, and deletes the customer only if they have no existing appointments
+     * @param actionEvent delete button clicked
+     * @throws SQLException if error occurs during the deletion.
+     */
     public void onActionDeleteCustomer(ActionEvent actionEvent) throws SQLException {
         Customers selected = allCustomersTable.getSelectionModel().getSelectedItem();
 
@@ -252,31 +297,60 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * User is returned to the login screen and must login again
+     * @param actionEvent logout button clicked
+     * @throws IOException if login screen is not found
+     */
     public void onLogoutButtonClick(ActionEvent actionEvent) throws IOException {
         switchScreen(actionEvent, "login.fxml", "Login");
     }
 
-
-
+    /**
+     * Connection to the database is closed, and the program exits
+     * @param actionEvent exit button clicked
+     */
     public void onExitButton(ActionEvent actionEvent) {
         JDBC.closeConnection();
         System.exit(0);
     }
 
+    /**
+     * Queries the database with a query to only show appointments within the week.
+     * Sets items in the tableView based on what the query returns
+     * @param actionEvent view by week radio button selected
+     * @throws SQLException if error occurs during the query
+     */
     public void viewByWeekSelected(ActionEvent actionEvent) throws SQLException {
         ObservableList<Appointments> a = appointmentAccess.viewByWeek();
         allAppointmentsTable.setItems(a);
     }
 
+    /**
+     * Queries the database with a query to only show appointments within the month.
+     * Sets items in the tableView based on what the query returns
+     * @param actionEvent view by month radio button selected
+     * @throws SQLException if error occurs during the query
+     */
     public void viewByMonthSelected(ActionEvent actionEvent) throws SQLException {
         ObservableList<Appointments> a = appointmentAccess.viewByMonth();
         allAppointmentsTable.setItems(a);
     }
 
+    /**
+     * returns the appointment tableView to display all appointments
+     * @param actionEvent view all radio button selected
+     * @throws SQLException if error occurs during the query
+     */
     public void viewAllSelected(ActionEvent actionEvent) throws SQLException {
         allAppointmentsTable.setItems(appointmentAccess.getAllAppointments());
     }
 
+    /**
+     * Initializes the screen and populates the tableviews appointment and customer respectively
+     * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle resourceBundle The resources used to localize the root object, or null if the root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Create observable list for tableviews

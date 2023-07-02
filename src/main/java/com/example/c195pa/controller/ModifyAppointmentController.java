@@ -65,14 +65,11 @@ public class ModifyAppointmentController implements Initializable {
     @FXML
     private ComboBox<Integer> apptUserID;
 
-    public Alert createWarningAlert(String header, String context) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setHeaderText(header);
-        alert.setContentText(context);
-        alert.showAndWait();
-        return alert;
-    }
-
+    /**
+     * Simple function to return the user to the main menu
+     * @param event user attempts to go to main menu
+     * @throws IOException if main menu is not found
+     */
     public void toMainMenu (ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("MainMenu.fxml")));
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -82,6 +79,12 @@ public class ModifyAppointmentController implements Initializable {
         stage.show();
     }
 
+    /**
+     * send the selected appointment from the main screen and populates modify appointment
+     * with the data.
+     * @param selected appointment selected in the main menu appointment table view
+     * @throws SQLException if any query called returns an error
+     */
     public void sendAppointment(Appointments selected) throws SQLException {
         appointmentIDField.setText(Integer.toString(selected.getAppointmentID()));
         appointmentTitleField.setText(selected.getTitle());
@@ -100,11 +103,22 @@ public class ModifyAppointmentController implements Initializable {
         apptUserID.setValue(selected.getUserID());
     }
 
+    /**
+     * Returns the user to main menu screen
+     * @param event cancel button clicked
+     * @throws IOException if main menu screen is not found
+     */
     @FXML
     void cancelButtonClicked(ActionEvent event) throws IOException {
         toMainMenu(event);
     }
 
+    /**
+     * Gets the text from the text fields, and send the information to the updateAppointment function.
+     * If that function returns true, the appointment is updated and the user is returned to the main screen.
+     * @param event save button clicked
+     * @throws SQLException if the appointment is not able to be added to the database
+     */
     @FXML
     void saveButtonClicked(ActionEvent event) throws SQLException {
 
@@ -133,13 +147,24 @@ public class ModifyAppointmentController implements Initializable {
                 alert.setHeaderText("Appointment ID " + a.getAppointmentID() + " was successfully modified!");
                 alert.showAndWait();
                 toMainMenu(event);
+            }    else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setHeaderText("Failed to add " + appointmentTitleField.getText() + ".");
+                alert.showAndWait();
             }
+
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Initialize method populates the appointment start and end time boxes with only dates that could be within business hours.
+     * Also populates the contact box, customer ID box, and the user id box.
+     * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle resourceBundle The resources used to localize the root object, or null if the root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -157,7 +182,7 @@ public class ModifyAppointmentController implements Initializable {
         apptEndTimeBox.setItems(appointmentTimes);
 
         /**
-         * Lambda function that prevents user from selecting start day before today
+         * LAMBDA function that prevents user from selecting start day before today
          */
         apptStartDatePicker.setDayCellFactory(apptStartDatePicker -> new DateCell() {
             public void updateItem(LocalDate apptStartDatePicker, boolean empty) {
