@@ -48,8 +48,8 @@ public class appointmentAccess {
                 int userID = rs.getInt("User_ID");
                 int contactID = rs.getInt("Contact_ID");
                 String contact = rs.getString("Contact_Name");
-                LocalDateTime dateTime = rs.getTimestamp("Start").toLocalDateTime();
 
+                LocalDateTime dateTime = startTime.toLocalDateTime();
                 LocalDate localDate = startTime.toLocalDateTime().toLocalDate();
                 LocalTime start = startTime.toLocalDateTime().toLocalTime();
                 LocalTime end = endTime.toLocalDateTime().toLocalTime();
@@ -70,7 +70,6 @@ public class appointmentAccess {
 
     public static boolean addAppointment(Appointments a) throws SQLException {
 
-
         LocalDate startDate = a.getLocalDate();
         LocalDate endDate = a.getLocalDate();
         LocalTime startTime = a.getStart();
@@ -82,17 +81,8 @@ public class appointmentAccess {
         Users test = Users.getLoggedOnUser();
         String u = test.getUsername();
 
-        ZonedDateTime startDT = ZonedDateTime.of(start, Users.getUserZoneID());
-        ZonedDateTime endDT = ZonedDateTime.of(end, Users.getUserZoneID());
-        ZonedDateTime startZoned = startDT.withZoneSameInstant(ZoneOffset.UTC);
-        ZonedDateTime endZoned = endDT.withZoneSameInstant(ZoneOffset.UTC);
-
-        System.out.println(start);
-        System.out.println(startZoned);
-        System.out.println(end);
-        System.out.println(endZoned);
-
-        System.out.println(u);
+        Timestamp startTS = Timestamp.valueOf(start);
+        Timestamp endTS = Timestamp.valueOf(end);
 
         boolean success = validateAppointments(a);
 
@@ -106,15 +96,15 @@ public class appointmentAccess {
         ps.setString(2, a.getDescription());
         ps.setString(3, a.getLocation());
         ps.setString(4, a.getAppointmentType());
-        ps.setString(5, startZoned.format(f));
-        ps.setString(6, endZoned.format(f));
+        ps.setTimestamp(5, startTS);
+        ps.setTimestamp(6, endTS);
         ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(f));
         ps.setString(8, u);
         ps.setString(9, ZonedDateTime.now(ZoneOffset.UTC).format(f));
         ps.setString(10, u);
         ps.setInt(11, a.getCustomerID());
         ps.setInt(12, a.getUserID());
-        ps.setInt(13, contactsAccess.getContactID(a.contact.toString()));
+        ps.setInt(13, contactsAccess.getContactID(a.contact));
         System.out.println(ps);
         if (success) {
             try {
@@ -141,17 +131,8 @@ public class appointmentAccess {
         LocalDateTime start = LocalDateTime.of(startDate, startTime);
         LocalDateTime end = LocalDateTime.of(endDate, endTime);
 
-        ZonedDateTime startDT = ZonedDateTime.of(start, Users.getUserZoneID());
-        ZonedDateTime endDT = ZonedDateTime.of(end, Users.getUserZoneID());
-        ZonedDateTime startZoned = startDT.withZoneSameInstant(ZoneOffset.UTC);
-        ZonedDateTime endZoned = endDT.withZoneSameInstant(ZoneOffset.UTC);
-
-        String startString = startZoned.format(f);
-        String endString = endZoned.format(f);
-        System.out.println(start.format(f));
-        System.out.println(startZoned.format(f));
-        System.out.println(end.format(f));
-        System.out.println(endZoned.format(f));
+        Timestamp startTS = Timestamp.valueOf(start);
+        Timestamp endTS = Timestamp.valueOf(end);
 
         Users test = Users.getLoggedOnUser();
         String u = test.getUsername();
@@ -171,8 +152,8 @@ public class appointmentAccess {
                 ps.setString(2, a.getDescription());
                 ps.setString(3, a.getLocation());
                 ps.setString(4, a.getAppointmentType());
-                ps.setString(5, startString);
-                ps.setString(6, endString);
+                ps.setTimestamp(5, startTS);
+                ps.setTimestamp(6, endTS);
                 ps.setString(7, ZonedDateTime.now(ZoneOffset.UTC).format(f));
                 ps.setString(8, u);
                 ps.setInt(9, a.getCustomerID());

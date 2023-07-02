@@ -312,7 +312,6 @@ public class MainMenuController implements Initializable {
         custCountry.setCellValueFactory(new PropertyValueFactory<>("Country"));
         custPostalCode.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
 
-
         // set items in table views
         allCustomersTable.setItems(allCustomers);
         allAppointmentsTable.setItems(allAppointments);
