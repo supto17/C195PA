@@ -67,7 +67,6 @@ public class LoginController implements Initializable {
         String password = loginPassword.getText();
 
         boolean logon = Users.loginAttempt(username, password);
-        System.out.println(logon);
 
         if (logon) {
             Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource("MainMenu.fxml")));

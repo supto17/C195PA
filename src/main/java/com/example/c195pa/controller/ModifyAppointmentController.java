@@ -90,8 +90,8 @@ public class ModifyAppointmentController implements Initializable {
         appointmentContactBox.setItems(contactsAccess.getContactNames());
         appointmentContactBox.getSelectionModel().select(selected.getContact());
         appointmentTypeField.setText(selected.getAppointmentType());
-        apptStartDatePicker.setValue(selected.getLocalDate());
-        apptEndDatePicker.setValue(selected.getLocalDate());
+        apptStartDatePicker.setValue(selected.getStartDate());
+        apptEndDatePicker.setValue(selected.getEndDate());
         apptStartTimeBox.setValue(selected.getStart().toString());
         apptEndTimeBox.setValue(selected.getEnd().toString());
         apptCustomerID.setItems(customerAccess.getCustomerIDs());
@@ -124,10 +124,14 @@ public class ModifyAppointmentController implements Initializable {
             LocalDateTime dateTime = LocalDateTime.of(startDate,startTime);
 
             Appointments a = new Appointments(id, title, description,location,type,startTime,endTime,
-                              startDate,customerID,userID,contactsAccess.getContactID(contact),contact , dateTime);
+                              startDate, endDate, customerID,userID,contactsAccess.getContactID(contact),contact , dateTime);
 
             boolean success = appointmentAccess.updateAppointment(a);
+
             if (success) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Appointment ID " + a.getAppointmentID() + " was successfully modified!");
+                alert.showAndWait();
                 toMainMenu(event);
             }
         }
@@ -151,6 +155,28 @@ public class ModifyAppointmentController implements Initializable {
         }
         apptStartTimeBox.setItems(appointmentTimes);
         apptEndTimeBox.setItems(appointmentTimes);
+
+        /**
+         * Lambda function that prevents user from selecting start day before today
+         */
+        apptStartDatePicker.setDayCellFactory(apptStartDatePicker -> new DateCell() {
+            public void updateItem(LocalDate apptStartDatePicker, boolean empty) {
+                super.updateItem(apptStartDatePicker, empty);
+                setDisable(
+                        empty || apptStartDatePicker.isBefore(LocalDate.now()));
+            }
+        });
+
+        /**
+         * Lambda function that prevents user from selecting end day before today
+         */
+        apptEndDatePicker.setDayCellFactory(apptEndDatePicker -> new DateCell() {
+            public void updateItem(LocalDate apptEndDatePicker, boolean empty) {
+                super.updateItem(apptEndDatePicker, empty);
+                setDisable(
+                        empty || apptEndDatePicker.isBefore(LocalDate.now()));
+            }
+        });
 
     }
 }

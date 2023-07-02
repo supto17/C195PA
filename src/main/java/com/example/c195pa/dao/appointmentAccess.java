@@ -50,16 +50,13 @@ public class appointmentAccess {
                 String contact = rs.getString("Contact_Name");
 
                 LocalDateTime dateTime = startTime.toLocalDateTime();
-                LocalDate localDate = startTime.toLocalDateTime().toLocalDate();
+                LocalDate startDate = startTime.toLocalDateTime().toLocalDate();
+                LocalDate endDate = startTime.toLocalDateTime().toLocalDate();
                 LocalTime start = startTime.toLocalDateTime().toLocalTime();
                 LocalTime end = endTime.toLocalDateTime().toLocalTime();
 
-                System.out.println(dateTime);
-                System.out.println(start);
-                System.out.println(end);
-
                 Appointments a = new Appointments(appointmentID, title, description, location, type,
-                        start, end, localDate, customerID, userID, contactID, contact, dateTime);
+                        start, end, startDate, endDate, customerID, userID, contactID, contact, dateTime);
                 appointmentsObservableList.add(a);
             }
         } catch (SQLException e) {
@@ -70,8 +67,8 @@ public class appointmentAccess {
 
     public static boolean addAppointment(Appointments a) throws SQLException {
 
-        LocalDate startDate = a.getLocalDate();
-        LocalDate endDate = a.getLocalDate();
+        LocalDate startDate = a.getStartDate();
+        LocalDate endDate = a.getEndDate();
         LocalTime startTime = a.getStart();
         LocalTime endTime = a.getEnd();
 
@@ -122,8 +119,8 @@ public class appointmentAccess {
     //TODO update appointment logic
     public static boolean updateAppointment(Appointments a) throws SQLException {
 
-        LocalDate startDate = a.getLocalDate();
-        LocalDate endDate = a.getLocalDate();
+        LocalDate startDate = a.getStartDate();
+        LocalDate endDate = a.getEndDate();
         LocalTime startTime = a.getStart();
         LocalTime endTime = a.getEnd();
 
@@ -136,7 +133,6 @@ public class appointmentAccess {
 
         Users test = Users.getLoggedOnUser();
         String u = test.getUsername();
-        System.out.println(u);
 
         boolean success = validateAppointments(a);
 
@@ -161,19 +157,22 @@ public class appointmentAccess {
                 ps.setInt(11, contactsAccess.getContactID(a.contact));
                 ps.setInt(12, a.getAppointmentID());
 
-                System.out.println(ps);
 
                 ps.executeUpdate();
                 System.out.println("Update worked!");
 
+                ps.close();
                 return true;
             } catch (SQLException e) {
                 e.printStackTrace();
                 System.out.println("Try again nerd.");
+                ps.close();
                 return false;
             }
         }
-        return true;
+        else {
+            return false;
+        }
     }
 
     public static ObservableList<Integer> getUserIDs() throws SQLException {
@@ -220,18 +219,21 @@ public class appointmentAccess {
             String location = rs.getString("Location");
             String type = rs.getString("Type");
             Timestamp startTime = rs.getTimestamp("Start");
-            LocalTime end = rs.getTimestamp("End").toLocalDateTime().toLocalTime();
-            LocalDate localDate = startTime.toLocalDateTime().toLocalDate();
-            LocalTime start = startTime.toLocalDateTime().toLocalTime();
+            Timestamp endTime = rs.getTimestamp("End");
             int customerID = rs.getInt("Customer_ID");
             int userID = rs.getInt("User_ID");
             int contactID = rs.getInt("Contact_ID");
             String contact = contactName;
-            LocalDateTime dateTime = rs.getTimestamp("Start").toLocalDateTime();
+
+            LocalDateTime dateTime = startTime.toLocalDateTime();
+            LocalDate startDate = startTime.toLocalDateTime().toLocalDate();
+            LocalDate endDate = endTime.toLocalDateTime().toLocalDate();
+            LocalTime start = startTime.toLocalDateTime().toLocalTime();
+            LocalTime end = endTime.toLocalDateTime().toLocalTime();
 
 
             Appointments a = new Appointments(appointmentID, title, description, location, type,
-                    start, end, localDate, customerID, userID, contactID, contact , dateTime);
+                    start, end, startDate, endDate, customerID, userID, contactID, contact , dateTime);
             appointmentsByContact.add(a);
         }
         return appointmentsByContact;
@@ -270,17 +272,20 @@ public class appointmentAccess {
                 String location = rs.getString("Location");
                 String type = rs.getString("Type");
                 Timestamp startTime = rs.getTimestamp("Start");
-                LocalTime end = rs.getTimestamp("End").toLocalDateTime().toLocalTime();
-                LocalDate localDate = startTime.toLocalDateTime().toLocalDate();
-                LocalTime start = startTime.toLocalDateTime().toLocalTime();
+                Timestamp endTime = rs.getTimestamp("End");
                 int customerID = rs.getInt("Customer_ID");
                 int userID = rs.getInt("User_ID");
                 int contactID = rs.getInt("Contact_ID");
                 String contact = contactsAccess.getContactName(contactID);
-                LocalDateTime dateTime = rs.getTimestamp("Start").toLocalDateTime();
+
+                LocalDateTime dateTime = startTime.toLocalDateTime();
+                LocalDate startDate = startTime.toLocalDateTime().toLocalDate();
+                LocalDate endDate = endTime.toLocalDateTime().toLocalDate();
+                LocalTime start = startTime.toLocalDateTime().toLocalTime();
+                LocalTime end = endTime.toLocalDateTime().toLocalTime();
 
                 Appointments a = new Appointments(appointmentID, title, description, location, type,
-                        start, end, localDate, customerID, userID, contactID, contact, dateTime);
+                        start, end, startDate, endDate, customerID, userID, contactID, contact, dateTime);
                 viewByWeek.add(a);
             }
         } catch (SQLException e) {
@@ -304,17 +309,20 @@ public class appointmentAccess {
                 String location = rs.getString("Location");
                 String type = rs.getString("Type");
                 Timestamp startTime = rs.getTimestamp("Start");
-                LocalTime end = rs.getTimestamp("End").toLocalDateTime().toLocalTime();
-                LocalDate localDate = startTime.toLocalDateTime().toLocalDate();
-                LocalTime start = startTime.toLocalDateTime().toLocalTime();
+                Timestamp endTime = rs.getTimestamp("End");
                 int customerID = rs.getInt("Customer_ID");
                 int userID = rs.getInt("User_ID");
                 int contactID = rs.getInt("Contact_ID");
                 String contact = contactsAccess.getContactName(contactID);
-                LocalDateTime dateTime = rs.getTimestamp("Start").toLocalDateTime();
+
+                LocalDateTime dateTime = startTime.toLocalDateTime();
+                LocalDate startDate = startTime.toLocalDateTime().toLocalDate();
+                LocalDate endDate = endTime.toLocalDateTime().toLocalDate();
+                LocalTime start = startTime.toLocalDateTime().toLocalTime();
+                LocalTime end = endTime.toLocalDateTime().toLocalTime();
 
                 Appointments a = new Appointments(appointmentID, title, description, location, type,
-                        start, end, localDate, customerID, userID, contactID, contact, dateTime);
+                        start, end, startDate, endDate, customerID, userID, contactID, contact, dateTime);
                 viewByMonth.add(a);
             }
         } catch (SQLException e) {
@@ -326,49 +334,61 @@ public class appointmentAccess {
     //TODO verify validation
     public static boolean validateAppointments(Appointments a) throws SQLException {
         ObservableList<Appointments> allAppointments = appointmentAccess.getAllAppointments();
-        LocalDate startDate = a.getLocalDate();
-        LocalDate endDate = a.getLocalDate();
+
+        LocalDate startDate = a.getStartDate();
+        LocalDate endDate = a.getEndDate();
         LocalTime startTime = a.getStart();
         LocalTime endTime = a.getEnd();
-        LocalTime startBusinessTime = LocalTime.of(8,0,0);
-        LocalTime endBusinessTime = LocalTime.of(22, 0 ,0);
-        LocalDateTime dateTimeStart = LocalDateTime.of(startDate, startTime);
-        LocalDateTime dateTimeEnd = LocalDateTime.of(endDate, endTime);
-        ZonedDateTime zoneDateStart = ZonedDateTime.of(dateTimeStart, ZoneId.systemDefault());
-        ZonedDateTime zoneDateEnd = ZonedDateTime.of(dateTimeEnd, ZoneId.systemDefault());
-        ZonedDateTime convertStartEST = zoneDateStart.withZoneSameInstant(ZoneId.of("America/New_York"));
-        ZonedDateTime convertEndEST = zoneDateEnd.withZoneSameInstant(ZoneId.of("America/New_York"));
-        LocalDateTime startBusiness = LocalDateTime.of(startDate, startBusinessTime);
-        LocalDateTime endBusiness = LocalDateTime. of(startDate, endBusinessTime);
+
+        ZonedDateTime startZDT = ZonedDateTime.of(startDate, startTime, Users.getUserZoneID());
+        ZonedDateTime endZDT = ZonedDateTime.of(endDate, endTime, Users.getUserZoneID());
+        ZonedDateTime startBusinessHours = ZonedDateTime.of(a.getStartDate(), LocalTime.of(8, 0), ZoneId.of("America/New_York"));
+        ZonedDateTime endBusinessHours = ZonedDateTime.of(a.getEndDate(), LocalTime.of(22, 0), ZoneId.of("America/New_York"));
 
         //TODO Check business hours
-     //   if (convertStartEST.isAfter(ChronoZonedDateTime.from(endBusiness)) || convertEndEST.isAfter(ChronoZonedDateTime.from(endBusiness))
-    //            || convertStartEST.isBefore(ChronoZonedDateTime.from(startBusiness)) || convertEndEST.isAfter(ChronoZonedDateTime.from(startBusiness))) {
-    //        createWarningAlert("Due to business constraints, start time and end time must be in business hours of 8:00am - 10:00pm",
-                    //"Current EST: " + ZonedDateTime.now().withZoneSameInstant(ZoneId.of("America/New_York")));
-     //   }
+        if (startZDT.isBefore(startBusinessHours) || startZDT.isAfter(endBusinessHours) || endZDT.isBefore(startBusinessHours) || endZDT.isAfter(endBusinessHours)) {
+            createWarningAlert("Due to business constraints, start time and end time must be in business hours of 8:00am - 10:00pm",
+                    "Current EST: " + LocalTime.now(ZoneId.of("America/New_York")));
+            return false;
+        }
 
+        /**
+         * Logic for validating data against other appointments
+         */
         for (Appointments appointments : allAppointments) {
-            System.out.println(a.getStart());
-            System.out.println(appointments.getStart());
-            if (appointments.getStart() == a.getStart() || appointments.getEnd() == a.getEnd()) {
-                if (a.getStart().isAfter(appointments.getStart()) && a.getStart().isBefore(appointments.getEnd())) {
+            if (a.getAppointmentID() != appointments.getAppointmentID()) {
+                if (a.getStartDate().compareTo(appointments.getStartDate()) == 0) {
+                    if (appointments.getStart() == a.getStart() || appointments.getEnd() == a.getEnd()) {
+                        createWarningAlert("Appointment Overlap", "Appointment " + a.getAppointmentID() +
+                                " overlaps with existing appointment " + appointments.getAppointmentID());
+                        System.out.println("appointment starts or ends equal");
+                        return false;
+                    }
+                    if (a.getStart().isAfter(appointments.getStart()) && a.getStart().isBefore(appointments.getEnd())) {
+                        createWarningAlert("Appointment Overlap", "Appointment " + a.getAppointmentID() +
+                                " overlaps with existing appointment " + appointments.getAppointmentID());
+                        System.out.println("appoint start is between another appointment");
+                        return false;
+                    }
                     if (a.getEnd().isAfter(appointments.getStart()) && a.getEnd().isBefore(appointments.getEnd())) {
                         createWarningAlert("Appointment Overlap", "Appointment " + a.getAppointmentID() +
                                 " overlaps with existing appointment " + appointments.getAppointmentID());
+                        System.out.println("appointment end is between another appointment");
                         return false;
+                         }
                     }
-                    createWarningAlert("Appointment Overlap", "Appointment " + a.getAppointmentID() +
-                            " overlaps with existing appointment " + appointments.getAppointmentID());
                 }
-                createWarningAlert("Appointment Overlap", "Appointment " + a.getAppointmentID() +
-                        " overlaps with existing appointment " + appointments.getAppointmentID());
             }
-
-            if (startDate.isAfter(endDate) || startDate != endDate) {
-                createWarningAlert("Invalid Dates", "Due to business constraints, appointment start date and end date must be on the same day");
-                return false;
-            }
+        /**
+         * Logic for validating user input
+         */
+        if (startDate.isAfter(endDate) || endDate.isAfter(startDate)) {
+            createWarningAlert("Invalid Dates", "Due to business constraints, appointment start date and end date must be on the same day");
+            return false;
+        }
+        if(endTime.isBefore(startTime)) {
+            createWarningAlert("Invalid Times", "End time must be after start time.");
+            return false;
         }
         return true;
     }

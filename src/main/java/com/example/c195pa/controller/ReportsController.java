@@ -147,7 +147,7 @@ public class ReportsController  implements Initializable {
                     apptType.setCellValueFactory(new PropertyValueFactory<>("appointmentType"));
                     apptStartTime.setCellValueFactory(new PropertyValueFactory<>("start"));
                     apptEndTime.setCellValueFactory(new PropertyValueFactory<>("end"));
-                    apptStartDate.setCellValueFactory(new PropertyValueFactory<>("localDate"));
+                    apptStartDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
                     apptCustID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
                     apptUserID.setCellValueFactory(new PropertyValueFactory<>("userID"));
                     appointmentView.setItems(appointmentByContact);

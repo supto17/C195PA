@@ -96,14 +96,14 @@ public class AddAppointmentController implements Initializable {
 
             int contactID = contactsAccess.getContactID(contact);
 
-            Appointments a = new Appointments(title, description, location, type, startTime, endTime, startDate, customerID, userID,
+            Appointments a = new Appointments(title, description, location, type, startTime, endTime, startDate, endDate, customerID, userID,
                         contactID, contact, l);
 
             boolean success = appointmentAccess.addAppointment(a);
 
                 if (success) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setHeaderText("Appointment update successful");
+                    alert.setHeaderText("Appointment added successfully!");
                     alert.showAndWait();
                     toMainMenu(event);
                 }
@@ -144,6 +144,28 @@ public class AddAppointmentController implements Initializable {
         catch (SQLException e) {
             e.printStackTrace();
         }
+
+        /**
+         * Lambda function that prevents user from selecting start day before today
+         */
+        apptStartDatePicker.setDayCellFactory(apptStartDatePicker -> new DateCell() {
+            public void updateItem(LocalDate apptStartDatePicker, boolean empty) {
+                super.updateItem(apptStartDatePicker, empty);
+                setDisable(
+                      empty || apptStartDatePicker.isBefore(LocalDate.now()));
+            }
+        });
+
+        /**
+         * Lambda function that prevents user from selecting end day before today
+         */
+        apptEndDatePicker.setDayCellFactory(apptEndDatePicker -> new DateCell() {
+        public void updateItem(LocalDate apptEndDatePicker, boolean empty) {
+            super.updateItem(apptEndDatePicker, empty);
+            setDisable(
+                    empty || apptEndDatePicker.isBefore(LocalDate.now()));
+            }
+        });
     }
 }
 

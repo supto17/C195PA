@@ -35,7 +35,6 @@ public class Users {
         ps.setString(1, username);
         ps.setString(2, password);
         ResultSet rs = ps.executeQuery();
-        System.out.println(ps);
 
         boolean found = false;
 
@@ -44,13 +43,11 @@ public class Users {
             username = rs.getString("User_Name");
             password = rs.getString("Password");
             loggedOnUser = new Users(userID, username, password);
-            System.out.println(username);
             auditLogin(username, true);
             found = true;
         }
         if (!found) {
             ps.close();
-            System.out.println(username);
             auditLogin(username, false);
             found = false;
         }
@@ -60,12 +57,13 @@ public class Users {
     }
 
     public static void auditLogin(String userName, Boolean b) throws IOException {
+        String s = ZoneId.systemDefault() + " LOGIN ATTEMPT-USERNAME: " + userName + " LOGIN SUCCESSFUL: " + (b.toString() + "\n");
         try {
-            FileWriter logger = new FileWriter(logPath);
-            String s = ZonedDateTime.now(ZoneOffset.UTC) + " UTC-LOGIN ATTEMPT-USERNAME: " + userName + " LOGIN SUCCESSFUL: " + (b.toString() + "\n");
-            logger.write(s);
-            logger.flush();
-            logger.close();
+            FileWriter logger = new FileWriter(logPath, true);
+            PrintWriter pw = new PrintWriter(logger);
+            pw.write(s);
+            pw.flush();
+            pw.close();
             System.out.println("Wrote to file!");
         }
         catch (IOException error) {

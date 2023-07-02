@@ -299,7 +299,7 @@ public class MainMenuController implements Initializable {
         apptType.setCellValueFactory(new PropertyValueFactory<>("appointmentType"));
         apptStartTime.setCellValueFactory(new PropertyValueFactory<>("start"));
         apptEndTime.setCellValueFactory(new PropertyValueFactory<>("end"));
-        apptDate.setCellValueFactory(new PropertyValueFactory<>("localDate"));
+        apptDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         apptCustomerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         apptUserID.setCellValueFactory(new PropertyValueFactory<>("userID"));
 

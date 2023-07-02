@@ -16,14 +16,15 @@ public class Appointments {
     private LocalDateTime dateTime;
     private LocalTime start;
     private LocalTime end;
-    private LocalDate localDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     public String contact;
     public int customerID;
     public int userID;
     public int contactID;
 
     public Appointments(int appointmentID, String title, String description, String location, String appointmentType,
-                        LocalTime start, LocalTime end, LocalDate localDate, int customerID, int userID, int contactID,
+                        LocalTime start, LocalTime end, LocalDate startDate, LocalDate endDate, int customerID, int userID, int contactID,
                         String contact, LocalDateTime dateTime) {
         this.appointmentID = appointmentID;
         this.title = title;
@@ -32,7 +33,8 @@ public class Appointments {
         this.appointmentType = appointmentType;
         this.start = start;
         this.end = end;
-        this.localDate = localDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.customerID = customerID;
         this.userID = userID;
         this.contactID = contactID;
@@ -40,7 +42,7 @@ public class Appointments {
         this.dateTime = dateTime;
     }
     public Appointments(String title, String description, String location, String appointmentType,
-                        LocalTime start, LocalTime end, LocalDate localDate, int customerID, int userID, int contactID,
+                        LocalTime start, LocalTime end, LocalDate startDate, LocalDate endDate, int customerID, int userID, int contactID,
                         String contact, LocalDateTime dateTime) {
         this.title = title;
         this.description = description;
@@ -48,7 +50,8 @@ public class Appointments {
         this.appointmentType = appointmentType;
         this.start = start;
         this.end = end;
-        this.localDate = localDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.customerID = customerID;
         this.userID = userID;
         this.contactID = contactID;
@@ -113,10 +116,9 @@ public class Appointments {
         return end;
     }
 
-    /**
-     * @return lDate
-     */
-    public LocalDate getLocalDate() {return localDate;}
+    public LocalDate getStartDate() {return startDate;}
+
+    public LocalDate getEndDate() {return endDate;}
 
     /**
      * @return customerID
