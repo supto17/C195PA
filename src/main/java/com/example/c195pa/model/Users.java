@@ -11,6 +11,12 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Locale;
 
+/**
+ * Class for creating users objects
+ *
+ * @author Spencer Upton
+ */
+
 public class Users {
     private int userID;
     private String username;

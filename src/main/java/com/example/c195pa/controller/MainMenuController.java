@@ -29,6 +29,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * Main menu controller
+ *
+ * @author Spencer Upton
+ */
+
 public class MainMenuController implements Initializable {
     @FXML
     public TableView <Appointments> allAppointmentsTable;

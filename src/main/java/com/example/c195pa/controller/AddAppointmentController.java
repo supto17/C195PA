@@ -25,6 +25,11 @@ import java.time.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Add appointment controller
+ *
+ * @author Spencer Upton
+ */
 public class AddAppointmentController implements Initializable {
 
     @FXML

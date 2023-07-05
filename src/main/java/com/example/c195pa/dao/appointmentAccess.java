@@ -14,6 +14,12 @@ import java.time.*;
 import java.time.chrono.ChronoZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Class for accessing the appointments table and performing CRUD on appointments objects
+ *
+ * @author Spencer Upton
+ */
+
 public class appointmentAccess {
 
     /**

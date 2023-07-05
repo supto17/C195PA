@@ -9,6 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class for accessing the fld table and performing CRUD on fld objects
+ *
+ * @author Spencer Upton
+ */
 public class fldAccess {
 
     /**

@@ -20,6 +20,11 @@ import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Add customer controller
+ *
+ * @author Spencer Upton
+ */
 public class AddCustomerController implements Initializable {
 
     @FXML

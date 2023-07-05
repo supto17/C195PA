@@ -4,6 +4,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+/**
+ * Class for creating appointment objects
+ *
+ * @author Spencer Upton
+ */
+
 public class Appointments {
     private String month;
     private String type;

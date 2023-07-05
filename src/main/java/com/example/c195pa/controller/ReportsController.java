@@ -26,6 +26,12 @@ import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Reports controller
+ *
+ * @author Spencer Upton
+ */
+
 public class ReportsController  implements Initializable {
     @FXML
     public TableColumn<Object, Object> apptStartDate;

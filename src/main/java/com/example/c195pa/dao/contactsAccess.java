@@ -11,6 +11,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.PropertyResourceBundle;
 
+/**
+ * Class for accessing the contacts table and performing CRUD on contacts objects
+ *
+ * @author Spencer Upton
+ */
+
 public class contactsAccess {
 
     /**

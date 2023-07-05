@@ -20,6 +20,12 @@ import java.sql.SQLException;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Modify customer controller
+ *
+ * @author Spencer Upton
+ */
+
 public class ModifyCustomerController implements Initializable {
     @FXML
     public TextField customerID;

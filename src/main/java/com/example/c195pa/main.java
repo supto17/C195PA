@@ -17,6 +17,12 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Locale;
 
+/**
+ * This is where the application starts. Initializes to the login screen and opens a connection to the database.
+ *
+ * @author Spencer Upton
+ */
+
 public class main extends Application {
     /**
      * Loads the login screen

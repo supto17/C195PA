@@ -9,6 +9,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class for accessing the users table and performing CRUD on user objects
+ *
+ * @author Spencer Upton
+ */
+
 public class usersAccess {
 
     /**

@@ -28,6 +28,12 @@ import java.time.LocalTime;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Modify appointment controller
+ *
+ * @author Spencer Upton
+ */
+
 public class ModifyAppointmentController implements Initializable {
     @FXML
     private ComboBox<String> appointmentContactBox;

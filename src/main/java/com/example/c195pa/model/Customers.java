@@ -4,6 +4,12 @@ import com.example.c195pa.dao.customerAccess;
 
 import java.sql.SQLException;
 
+/**
+ * Class for creating customer objects
+ *
+ * @author Spencer Upton
+ */
+
 public class Customers {
     private int customerID;
     private String customerName;

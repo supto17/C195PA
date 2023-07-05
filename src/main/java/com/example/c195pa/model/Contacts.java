@@ -1,5 +1,11 @@
 package com.example.c195pa.model;
 
+/**
+ * Class for creating contact objects
+ *
+ * @author Spencer Upton
+ */
+
 public class Contacts {
     public int contactID;
     private String contactName;

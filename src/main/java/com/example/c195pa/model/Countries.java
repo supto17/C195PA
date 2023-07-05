@@ -1,5 +1,11 @@
 package com.example.c195pa.model;
 
+/**
+ * Class for creating country objects
+ *
+ * @author Spencer Upton
+ */
+
 public class Countries {
     private int countryID;
     private String countryName;

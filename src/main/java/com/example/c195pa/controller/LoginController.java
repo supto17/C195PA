@@ -27,6 +27,12 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * Login controller
+ *
+ * @author Spencer Upton
+ */
+
 public class LoginController implements Initializable {
     @FXML
     public TextField loginUsername;

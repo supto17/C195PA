@@ -1,5 +1,11 @@
 package com.example.c195pa.model;
 
+/**
+ * Class for creating fld objects
+ *
+ * @author Spencer Upton
+ */
+
 public class FirstLevelDivisions {
     private int divisionID;
     private String divisionName;

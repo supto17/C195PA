@@ -13,6 +13,12 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Class for accessing the customer table and performing CRUD on customer objects
+ *
+ * @author Spencer Upton
+ */
+
 public class customerAccess {
 
     /**
