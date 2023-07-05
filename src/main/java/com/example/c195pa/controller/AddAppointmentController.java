@@ -147,6 +147,10 @@ public class AddAppointmentController implements Initializable {
      * Initialize method populates the appointment start and end time boxes with only dates that could be within business hours.
      * Also populates the contact box, customer ID box, and the user id box.
      * I have also written a lambda function to ensure the user cannot schedule an appointment before today.
+     * LAMBDA function that prevents user from selecting start day before today as the user should not be scheduling
+     * appointments before the current day
+     * LAMBDA function that prevents user from selecting end day before today as the user should not be scheduling
+     * appointments before the current day
      * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
      * @param resourceBundle resourceBundle The resources used to localize the root object, or null if the root object was not localized.
      */
@@ -186,7 +190,7 @@ public class AddAppointmentController implements Initializable {
         });
 
         /**
-         * LAMBDA function that prevents user from selecting start day before today as the user should not be scheduling
+         * LAMBDA function that prevents user from selecting end day before today as the user should not be scheduling
          * appointments before the current day
          */
         apptEndDatePicker.setDayCellFactory(apptEndDatePicker -> new DateCell() {

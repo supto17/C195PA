@@ -135,6 +135,7 @@ public class ReportsController  implements Initializable {
 
     /**
      * Initializes the reports page
+     * LAMBDA function that updates the appointment view when a new contact is selected.
      * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
      * @param resourceBundle resourceBundle The resources used to localize the root object, or null if the root object was not localized.
      */

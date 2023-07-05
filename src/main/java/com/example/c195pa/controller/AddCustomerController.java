@@ -127,6 +127,8 @@ public class AddCustomerController implements Initializable {
     /**
      * Initialize populates the customer country box and includes a LAMBDA function that listens
      * for changes in the customerCountryBox
+     * LAMBDA function that listens for entry on the customerCountryBox and populates the division box based
+     * on their selection
      * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
      * @param resourceBundle resourceBundle The resources used to localize the root object, or null if the root object was not localized.
      */

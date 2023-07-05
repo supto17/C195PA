@@ -135,6 +135,7 @@ public class ModifyCustomerController implements Initializable {
 
     /**
      *  Initializes the modify customer screen
+     *  LAMBDA function to listen for country combo box selection
      * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
      * @param resourceBundle resourceBundle The resources used to localize the root object, or null if the root object was not localized.
      */
