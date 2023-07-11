@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="534.0" prefWidth="891.0" style="-fx-alignment: CENTER;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.c195pa.controller.ReportsController">
+   <children>
+      <Label layoutX="40.0" layoutY="22.0" text="Reports">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TableView fx:id="appointmentView" layoutX="40.0" layoutY="87.0" prefHeight="154.0" prefWidth="836.0">
+        <columns>
+          <TableColumn fx:id="apptID" prefWidth="34.0" style="-fx-alignment: CENTER;" text="ID" />
+          <TableColumn fx:id="apptTitle" prefWidth="85.0" style="-fx-alignment: CENTER;" text="Title" />
+            <TableColumn fx:id="apptType" prefWidth="112.0" style="-fx-alignment: CENTER;" text="Type" />
+            <TableColumn fx:id="apptDescription" prefWidth="108.0" style="-fx-alignment: CENTER;" text="Description" />
+            <TableColumn fx:id="apptLocation" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Location" />
+            <TableColumn fx:id="apptStartTime" prefWidth="77.0" style="-fx-alignment: CENTER;" text="Start" />
+            <TableColumn fx:id="apptEndTime" prefWidth="84.0" style="-fx-alignment: CENTER;" text="End" />
+            <TableColumn fx:id="apptStartDate" prefWidth="102.0" style="-fx-alignment: CENTER;" text="Date" />
+            <TableColumn fx:id="apptCustID" prefWidth="78.0" style="-fx-alignment: CENTER;" text="Customer ID" />
+            <TableColumn fx:id="apptUserID" prefWidth="55.0" style="-fx-alignment: CENTER;" text="User ID" />
+        </columns>
+      </TableView>
+      <ComboBox fx:id="customerComboBox" layoutX="596.0" layoutY="40.0" prefHeight="25.0" prefWidth="161.0" />
+      <Label layoutX="482.0" layoutY="39.0" text="Contacts:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TableView fx:id="appointmentByMonth" layoutX="40.0" layoutY="294.0" prefHeight="213.0" prefWidth="403.0">
+         <columns>
+            <TableColumn fx:id="appointmentMonth" prefWidth="130.0" style="-fx-alignment: CENTER;" text="Appointment Month" />
+            <TableColumn fx:id="appointmentTypeByMonth" prefWidth="145.0" style="-fx-alignment: CENTER;" text="AppointmentType" />
+            <TableColumn fx:id="totalAppointments" prefWidth="127.0" style="-fx-alignment: CENTER;" text="Total Appointments" />
+         </columns>
+      </TableView>
+      <TableView fx:id="customersByDivisionTable" layoutX="489.0" layoutY="294.0" prefHeight="213.0" prefWidth="266.0">
+         <columns>
+            <TableColumn fx:id="divisionColumn" prefWidth="133.0" style="-fx-alignment: CENTER;" text="Division" />
+            <TableColumn fx:id="totalCustomers" prefWidth="132.0" style="-fx-alignment: CENTER;" text="Total Customers" />
+         </columns>
+      </TableView>
+      <VBox alignment="CENTER" layoutX="767.0" layoutY="294.0" prefHeight="213.0" prefWidth="100.0" spacing="30.0">
+         <children>
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonClicked" prefHeight="25.0" prefWidth="82.0" text="Back" />
+            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonClicked" prefHeight="25.0" prefWidth="83.0" text="Logout" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

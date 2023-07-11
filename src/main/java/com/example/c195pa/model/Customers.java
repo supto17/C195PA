@@ -1,5 +1,15 @@
 package com.example.c195pa.model;
 
+import com.example.c195pa.dao.customerAccess;
+
+import java.sql.SQLException;
+
+/**
+ * Class for creating customer objects
+ *
+ * @author Spencer Upton
+ */
+
 public class Customers {
     private int customerID;
     private String customerName;
@@ -7,21 +17,27 @@ public class Customers {
     private String customerPostalCode;
     private String customerPhoneNumber;
     public int divisionID;
+    public String division;
+    public String country;
 
-    public Customers(int customerID, String customerName, String customerAddress, String customerPostalCode,
-                     String customerPhoneNumber, int divisionID) {
+
+    public Customers(Integer customerID, String customerName, String customerAddress, String customerPostalCode,
+                     String customerPhoneNumber, int divisionID, String division, String country) throws SQLException {
         this.customerID = customerID;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.customerPostalCode = customerPostalCode;
         this.customerPhoneNumber = customerPhoneNumber;
         this.divisionID = divisionID;
+        this.division = division;
+        this.country = country;
     }
+
 
     /**
      * @return customerID
      */
-    public int getCustomerID() {
+    public Integer getCustomerID() {
         return customerID;
     }
 
@@ -59,4 +75,8 @@ public class Customers {
     public int getDivisionID() {
         return divisionID;
     }
+
+    public String getDivision() {return division;}
+
+    public String getCountry() {return country;}
 }

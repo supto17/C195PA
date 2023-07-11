@@ -4,6 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * This class contains the information needed to connect to the database and the functions for accessing
+ * connections elsewhere.
+ *
+ * @author Spencer Upton
+ */
+
 public abstract class JDBC {
 
     private static final String protocol = "jdbc";
@@ -16,6 +23,9 @@ public abstract class JDBC {
     private static String password = "Passw0rd!"; // Password
     public static Connection connection;  // Connection Interface
 
+    /**
+     * Opens a connection to the database
+     */
     public static void openConnection() {
         try {
             Class.forName(driver); // Locate Driver
@@ -25,10 +35,18 @@ public abstract class JDBC {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Gets the connection to the database
+     * @return connection to the database
+     */
     public static Connection getConnection(){
         return connection;
     }
 
+    /**
+     * Closes the connection to the database
+     */
     public static void closeConnection() {
         try {
             connection.close();

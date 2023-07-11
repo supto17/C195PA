@@ -9,28 +9,34 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class for accessing the fld table and performing CRUD on fld objects
+ *
+ * @author Spencer Upton
+ */
 public class fldAccess {
 
-    public ObservableList<FirstLevelDivisions> fldObservableList = FXCollections.observableArrayList();
+    /**
+     * Function that queries the database for my custom report on the reports page
+     * @return observable list of customers by division
+     * @throws SQLException if an error occurs during the query
+     */
+    public static ObservableList<FirstLevelDivisions> getCustomersByDivision() throws SQLException {
 
-    public ObservableList<FirstLevelDivisions> getAllFLD() throws SQLException {
+        ObservableList<FirstLevelDivisions> customersByDivision = FXCollections.observableArrayList();
 
-        try {
-            String sql = "SELECT * FROM first_level_divisions";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+        String sql = "SELECT Division, COUNT(Customer_ID) FROM first_level_divisions f " +
+                "JOIN customers c ON f.Division_ID = c.Division_ID GROUP BY Division ORDER BY COUNT(CUSTOMER_ID) DESC;";
 
-            while (rs.next()) {
-                int divisionID = rs.getInt("Division_ID");
-                String divisionName = rs.getString("Division");
-                int countryID = rs.getInt("Country_ID");
-                FirstLevelDivisions fld = new FirstLevelDivisions(divisionID, divisionName, countryID);
-                fldObservableList.add(fld);
-            }
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while(rs.next()) {
+            String s = rs.getString("Division");
+            int i = rs.getInt("Count(Customer_ID)");
+            FirstLevelDivisions f = new FirstLevelDivisions(s, i);
+            customersByDivision.add(f);
         }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return fldObservableList;
+        return customersByDivision;
     }
 }

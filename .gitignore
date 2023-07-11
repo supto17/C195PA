@@ -36,3 +36,4 @@ build/
 
 ### Mac OS ###
 .DS_Store
+src/main/java/com/example/c195pa/model/Logon.java

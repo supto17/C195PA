@@ -9,28 +9,28 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Class for accessing the users table and performing CRUD on user objects
+ *
+ * @author Spencer Upton
+ */
+
 public class usersAccess {
 
-    public ObservableList<Users> getAllUsers() throws SQLException {
+    /**
+     * Function that returns an observable list of userIDs
+     * @return observableList of userIDs
+     * @throws SQLException if error occurs during the query
+     */
+    public static ObservableList<Integer> getUserIDs() throws SQLException {
+        ObservableList<Integer> i = FXCollections.observableArrayList();
 
-        ObservableList<Users> usersObservableList = FXCollections.observableArrayList();
+        PreparedStatement ps = JDBC.getConnection().prepareStatement("SELECT User_ID FROM users ORDER BY User_ID;");
+        ResultSet rs = ps.executeQuery();
 
-        try {
-            String sql = "SELECT * FROM users";
-            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                int userID = rs.getInt("User_ID");
-                String username = rs.getString("Username");
-                String password = rs.getString("Password");
-                Users u = new Users(userID, username, password);
-                usersObservableList.add(u);
-            }
+        while (rs.next()) {
+            i.add(rs.getInt("User_ID"));
         }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return usersObservableList;
+        return i;
     }
 }

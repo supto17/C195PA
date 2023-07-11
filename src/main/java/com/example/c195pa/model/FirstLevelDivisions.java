@@ -1,21 +1,25 @@
 package com.example.c195pa.model;
 
+/**
+ * Class for creating fld objects
+ *
+ * @author Spencer Upton
+ */
+
 public class FirstLevelDivisions {
     private int divisionID;
     private String divisionName;
     public int countryID;
-
-    public FirstLevelDivisions(int divisionID, String divisionName, int countryID) {
-        this.divisionID = divisionID;
-        this.divisionName = divisionName;
-        this.countryID = countryID;
-    }
+    private int totalCustomers;
 
     /**
-     * @return divisionID
+     * Constructor used in the reports page
+     * @param divisionName name of the division
+     * @param totalCustomers total number of customers in that division
      */
-    public int getDivisionID() {
-        return divisionID;
+    public FirstLevelDivisions (String divisionName, int totalCustomers) {
+        this.divisionName = divisionName;
+        this.totalCustomers = totalCustomers;
     }
 
     /**
@@ -26,9 +30,9 @@ public class FirstLevelDivisions {
     }
 
     /**
-     * @return countryID
+     * @return total customers
      */
-    public int getCountryID() {
-        return countryID;
-    }
+    public int getTotalCustomers() {return totalCustomers;}
 }
+
+
